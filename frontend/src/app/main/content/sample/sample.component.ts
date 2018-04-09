@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
-import { locale as turkish } from './i18n/tr';
+import { locale as spanish } from './i18n/es';
 
 @Component({
     selector   : 'fuse-sample',
@@ -14,6 +14,6 @@ export class FuseSampleComponent
 {
     constructor(private fuseTranslationLoader: FuseTranslationLoaderService)
     {
-        this.fuseTranslationLoader.loadTranslations(english, turkish);
+        this.fuseTranslationLoader.loadTranslations(english, spanish);
     }
 }
