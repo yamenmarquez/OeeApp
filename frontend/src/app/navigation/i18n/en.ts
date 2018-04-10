@@ -1,4 +1,5 @@
-export const locale = {
+// Se desabilita la funcionalidad de traducción
+/* export const locale = {
     lang: 'en',
     data: {
         'NAV': {
@@ -9,4 +10,4 @@ export const locale = {
             }
         }
     }
-};
+}; */

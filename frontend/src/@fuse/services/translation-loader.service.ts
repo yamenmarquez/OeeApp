@@ -1,4 +1,7 @@
-import { Injectable } from '@angular/core';
+
+// Se desabilita la funcionalidad de traducción
+
+/* import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface Locale
@@ -24,4 +27,4 @@ export class FuseTranslationLoaderService
             this.translate.setTranslation(locale.lang, locale.data, true);
         });
     }
-}
+} */

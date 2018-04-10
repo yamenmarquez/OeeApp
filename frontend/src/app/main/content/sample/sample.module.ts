@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { TranslateModule } from '@ngx-translate/core';
+// Se desabilita la funcionalidad de traducción
+// import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -21,7 +22,8 @@ const routes = [
     imports     : [
         RouterModule.forChild(routes),
 
-        TranslateModule,
+        // Se desabilita la funcionalidad de traducción
+        // TranslateModule,
 
         FuseSharedModule
     ],

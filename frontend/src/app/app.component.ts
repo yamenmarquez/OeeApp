@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+// Se desabilita la funcionalidad de traducción
+// import { TranslateService } from '@ngx-translate/core';
 
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+
+// Se desabilita la funcionalidad de traducción
+// import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 
-import { locale as navigationEnglish } from './navigation/i18n/en';
-import { locale as navigationSpanish } from './navigation/i18n/es';
+// Se desabilita la funcionalidad de traducción
+/* import { locale as navigationEnglish } from './navigation/i18n/en';
+import { locale as navigationSpanish } from './navigation/i18n/es'; */
 
 @Component({
     selector   : 'fuse-root',
@@ -16,22 +20,28 @@ import { locale as navigationSpanish } from './navigation/i18n/es';
 export class AppComponent
 {
     constructor(
-        private translate: TranslateService,
+        // Se desabilita la funcionalidad de traducción
+        // private translate: TranslateService,
         private fuseNavigationService: FuseNavigationService,
         private fuseSplashScreen: FuseSplashScreenService,
-        private fuseTranslationLoader: FuseTranslationLoaderService
+        // Se desabilita la funcionalidad de traducción
+        // private fuseTranslationLoader: FuseTranslationLoaderService
     )
     {
+        // Se desabilita la funcionalidad de traducción
         // Add languages
-        this.translate.addLangs(['en', 'es']);
+        // this.translate.addLangs(['en', 'es']);
 
+        // Se desabilita la funcionalidad de traducción
         // Set the default language
-        this.translate.setDefaultLang('es');
+        // this.translate.setDefaultLang('es');
 
+        // Se desabilita la funcionalidad de traducción
         // Set the navigation translations
-        this.fuseTranslationLoader.loadTranslations(navigationSpanish, navigationEnglish );
+        // this.fuseTranslationLoader.loadTranslations(navigationSpanish, navigationEnglish );
 
+        // Se desabilita la funcionalidad de traducción
         // Use a language
-        this.translate.use('es');
+        // this.translate.use('es');
     }
 }
