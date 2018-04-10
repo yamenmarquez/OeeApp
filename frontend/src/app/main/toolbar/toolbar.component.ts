@@ -16,8 +16,14 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 export class FuseToolbarComponent
 {
     userStatusOptions: any[];
-    languages: any;
-    selectedLanguage: any;
+
+    // Se desabilita la funcionalidad de traducción
+    /* Una vez desabilitada esta funcionalidad se elimina del Toolbar
+    la selección de idiomas */
+
+    // languages: any;
+    // selectedLanguage: any;
+
     showLoadingBar: boolean;
     horizontalNav: boolean;
     noNav: boolean;
@@ -58,6 +64,10 @@ export class FuseToolbarComponent
             }
         ];
 
+        // Se desabilita la funcionalidad de traducción
+        /* Una vez desabilitada esta funcionalidad se elimina del Toolbar
+        la selección de idiomas */
+        /*
         this.languages = [
             {
                 'id'   : 'en',
@@ -69,9 +79,9 @@ export class FuseToolbarComponent
                 'title': 'Spanish',
                 'flag' : 'es'
             }
-        ];
+        ]; */
 
-        this.selectedLanguage = this.languages[1];
+        // this.selectedLanguage = this.languages[1];
 
         router.events.subscribe(
             (event) => {
