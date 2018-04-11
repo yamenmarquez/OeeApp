@@ -1,7 +1,7 @@
 export const navigation = [
     {
-        'id'      : 'applications',
-        'title'   : 'Aplicación',
+        'id'      : 'appFrontend',
+        'title'   : 'App Frontend',
         // Se desabilita la funcionalidad de traducción
         // 'translate': 'NAV.APPLICATIONS',
         'type'    : 'group',
@@ -94,6 +94,78 @@ export const navigation = [
                 'type' : 'item',
                 'icon' : 'email',
                 'url'  : '/sample',
+            }
+        ]
+    },
+    {
+        'id'      : 'appBacktend',
+        'title'   : 'App Backend',
+        'type'    : 'group',
+        'children': [
+            {
+              'id'        : 'masterData' ,
+              'title'     : 'Datos maestros',
+              'type'      : 'collapse',
+              'icon'      : 'format_list_bulleted',
+              'children'  : [
+                {
+                  'id'   : 'npstops',
+                  'title': 'Paradas no planificadas',
+                  'type' : 'item',
+                  'icon' : 'settings_input_component',
+                  'url'  : '#'
+                },
+                {
+                    'id'   : 'pstops',
+                    'title': 'Paradas planificadas',
+                    'type' : 'item',
+                    'icon' : 'settings_input_component',
+                    'url'  : '#'
+                },
+                {
+                    'id'   : 'plants',
+                    'title': 'Plantas de producción',
+                    'type' : 'item',
+                    'icon' : 'settings_input_component',
+                    'url'  : '#'
+                },
+                {
+                    'id'   : 'bom',
+                    'title': 'Listas de materiales',
+                    'type' : 'item',
+                    'icon' : 'settings_input_component',
+                    'url'  : '#'
+                },
+                {
+                    'id'   : 'items',
+                    'title': 'Items',
+                    'type' : 'item',
+                    'icon' : 'settings_input_component',
+                    'url'  : '#'
+                },
+                {
+                    'id'   : 'workstations',
+                    'title': 'Estaciones de trabajo',
+                    'type' : 'item',
+                    'icon' : 'settings_input_component',
+                    'url'  : '#'
+                }
+              ]
+            },
+            {
+              'id'        : 'users' ,
+              'title'     : 'Usuarios',
+              'type'      : 'collapse',
+              'icon'      : 'person',
+              'children'  : [
+                {
+                  'id'   : 'userManagement',
+                  'title': 'Gestioón de usuarios',
+                  'type' : 'item',
+                  'icon' : 'supervisor_account',
+                  'url'  : '#'
+                },
+              ]
             }
         ]
     }

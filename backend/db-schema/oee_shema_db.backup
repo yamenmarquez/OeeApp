@@ -1,0 +1,695 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.2
+-- Dumped by pg_dump version 10.1
+
+-- Started on 2018-02-28 16:41:00
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12278)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2246 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 206 (class 1259 OID 16457)
+-- Name: bom; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE bom (
+    bom_id integer NOT NULL,
+    item_code character(12),
+    workstation integer,
+    production_rate numeric(12,0)
+);
+
+
+ALTER TABLE bom OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16455)
+-- Name: bom_bom_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE bom_bom_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bom_bom_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2247 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: bom_bom_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE bom_bom_id_seq OWNED BY bom.bom_id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16442)
+-- Name: items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE items (
+    item_code character(12) NOT NULL,
+    item_name character varying(256)
+);
+
+
+ALTER TABLE items OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 16501)
+-- Name: job_npstops; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE job_npstops (
+    job_npstops_id integer NOT NULL,
+    npstop_id integer NOT NULL,
+    start_date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    close_date date NOT NULL,
+    close_time time with time zone NOT NULL,
+    npstop_time numeric(12,0),
+    job_bumber integer,
+    npstop_description character varying(1024)
+);
+
+
+ALTER TABLE job_npstops OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16499)
+-- Name: job_npstops_job_npstops_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE job_npstops_job_npstops_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE job_npstops_job_npstops_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2248 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: job_npstops_job_npstops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE job_npstops_job_npstops_id_seq OWNED BY job_npstops.job_npstops_id;
+
+
+--
+-- TOC entry 208 (class 1259 OID 16475)
+-- Name: job_orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE job_orders (
+    job_number integer NOT NULL,
+    item_code character(12) NOT NULL,
+    planned_qty integer NOT NULL,
+    due_date date NOT NULL,
+    job_status character(12) NOT NULL,
+    start_date date,
+    start_time time with time zone,
+    close_date date,
+    close_time time with time zone,
+    batch_number character(32),
+    first_pass_qty integer,
+    rework_qty integer,
+    total_qty integer,
+    shift character(8),
+    job_process_time numeric(12,0),
+    job_performance_comments character varying(1024),
+    job_quality_comments character varying(1024)
+);
+
+
+ALTER TABLE job_orders OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16473)
+-- Name: job_order_job_number_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE job_order_job_number_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE job_order_job_number_seq OWNER TO postgres;
+
+--
+-- TOC entry 2249 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: job_order_job_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE job_order_job_number_seq OWNED BY job_orders.job_number;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16519)
+-- Name: job_pstops; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE job_pstops (
+    job_pstops_id integer NOT NULL,
+    pstop_id integer NOT NULL,
+    start_date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    close_date date NOT NULL,
+    close_time time with time zone NOT NULL,
+    pstop_time numeric(12,0),
+    job_number integer
+);
+
+
+ALTER TABLE job_pstops OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16517)
+-- Name: job_pstops_job_pstops_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE job_pstops_job_pstops_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE job_pstops_job_pstops_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2250 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: job_pstops_job_pstops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE job_pstops_job_pstops_id_seq OWNED BY job_pstops.job_pstops_id;
+
+
+--
+-- TOC entry 197 (class 1259 OID 16387)
+-- Name: npstops; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE npstops (
+    npstop_id integer NOT NULL,
+    npstop_name character varying(256),
+    npstop_res_email character varying(256)
+);
+
+
+ALTER TABLE npstops OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 16385)
+-- Name: npstops_npstops_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE npstops_npstops_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE npstops_npstops_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2251 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: npstops_npstops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE npstops_npstops_id_seq OWNED BY npstops.npstop_id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16537)
+-- Name: oee_data; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE oee_data (
+    oee_id integer NOT NULL,
+    date date,
+    shift character(12),
+    ws_id integer,
+    start_date date,
+    start_time time without time zone,
+    close_date date,
+    close_time time with time zone,
+    total_time numeric(12,0),
+    available_time numeric(12,0),
+    run_time numeric(12,0),
+    pstops_time numeric(12,0),
+    npstops_time numeric(12,0),
+    availability numeric(12,0),
+    performance numeric(12,0),
+    quality numeric(12,0),
+    oee numeric(12,0),
+    oee_status character(12)
+);
+
+
+ALTER TABLE oee_data OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16535)
+-- Name: oee_data_oee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oee_data_oee_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE oee_data_oee_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2252 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: oee_data_oee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oee_data_oee_id_seq OWNED BY oee_data.oee_id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16409)
+-- Name: plants; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE plants (
+    plant_id integer NOT NULL,
+    plant_name character varying(256)
+);
+
+
+ALTER TABLE plants OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16407)
+-- Name: plants_plant_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE plants_plant_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE plants_plant_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2253 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: plants_plant_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE plants_plant_id_seq OWNED BY plants.plant_id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 16398)
+-- Name: pstops; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pstops (
+    pstop_id integer NOT NULL,
+    pstop_name character varying,
+    pstop_res_email character varying
+);
+
+
+ALTER TABLE pstops OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16396)
+-- Name: pstop_pstop_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pstop_pstop_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pstop_pstop_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2254 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: pstop_pstop_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pstop_pstop_id_seq OWNED BY pstops.pstop_id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16428)
+-- Name: workstations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE workstations (
+    ws_id integer NOT NULL,
+    ws_name character varying(256),
+    ws_type character varying(256),
+    ws_plant integer
+);
+
+
+ALTER TABLE workstations OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16426)
+-- Name: workstations_ws_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE workstations_ws_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE workstations_ws_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2255 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: workstations_ws_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE workstations_ws_id_seq OWNED BY workstations.ws_id;
+
+
+--
+-- TOC entry 2085 (class 2604 OID 16460)
+-- Name: bom bom_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bom ALTER COLUMN bom_id SET DEFAULT nextval('bom_bom_id_seq'::regclass);
+
+
+--
+-- TOC entry 2087 (class 2604 OID 16504)
+-- Name: job_npstops job_npstops_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_npstops ALTER COLUMN job_npstops_id SET DEFAULT nextval('job_npstops_job_npstops_id_seq'::regclass);
+
+
+--
+-- TOC entry 2086 (class 2604 OID 16478)
+-- Name: job_orders job_number; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_orders ALTER COLUMN job_number SET DEFAULT nextval('job_order_job_number_seq'::regclass);
+
+
+--
+-- TOC entry 2088 (class 2604 OID 16522)
+-- Name: job_pstops job_pstops_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_pstops ALTER COLUMN job_pstops_id SET DEFAULT nextval('job_pstops_job_pstops_id_seq'::regclass);
+
+
+--
+-- TOC entry 2081 (class 2604 OID 16390)
+-- Name: npstops npstop_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY npstops ALTER COLUMN npstop_id SET DEFAULT nextval('npstops_npstops_id_seq'::regclass);
+
+
+--
+-- TOC entry 2089 (class 2604 OID 16540)
+-- Name: oee_data oee_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oee_data ALTER COLUMN oee_id SET DEFAULT nextval('oee_data_oee_id_seq'::regclass);
+
+
+--
+-- TOC entry 2083 (class 2604 OID 16412)
+-- Name: plants plant_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY plants ALTER COLUMN plant_id SET DEFAULT nextval('plants_plant_id_seq'::regclass);
+
+
+--
+-- TOC entry 2082 (class 2604 OID 16401)
+-- Name: pstops pstop_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pstops ALTER COLUMN pstop_id SET DEFAULT nextval('pstop_pstop_id_seq'::regclass);
+
+
+--
+-- TOC entry 2084 (class 2604 OID 16431)
+-- Name: workstations ws_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY workstations ALTER COLUMN ws_id SET DEFAULT nextval('workstations_ws_id_seq'::regclass);
+
+
+--
+-- TOC entry 2101 (class 2606 OID 16462)
+-- Name: bom bom_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bom
+    ADD CONSTRAINT bom_pkey PRIMARY KEY (bom_id);
+
+
+--
+-- TOC entry 2099 (class 2606 OID 16446)
+-- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT items_pkey PRIMARY KEY (item_code);
+
+
+--
+-- TOC entry 2105 (class 2606 OID 16506)
+-- Name: job_npstops job_npstops_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_npstops
+    ADD CONSTRAINT job_npstops_pkey PRIMARY KEY (job_npstops_id);
+
+
+--
+-- TOC entry 2103 (class 2606 OID 16480)
+-- Name: job_orders job_order_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_orders
+    ADD CONSTRAINT job_order_pkey PRIMARY KEY (job_number);
+
+
+--
+-- TOC entry 2107 (class 2606 OID 16524)
+-- Name: job_pstops job_pstops_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_pstops
+    ADD CONSTRAINT job_pstops_pkey PRIMARY KEY (job_pstops_id);
+
+
+--
+-- TOC entry 2091 (class 2606 OID 16395)
+-- Name: npstops npstops_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY npstops
+    ADD CONSTRAINT npstops_pkey PRIMARY KEY (npstop_id);
+
+
+--
+-- TOC entry 2109 (class 2606 OID 16542)
+-- Name: oee_data oee_data_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oee_data
+    ADD CONSTRAINT oee_data_pkey PRIMARY KEY (oee_id);
+
+
+--
+-- TOC entry 2095 (class 2606 OID 16414)
+-- Name: plants plants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY plants
+    ADD CONSTRAINT plants_pkey PRIMARY KEY (plant_id);
+
+
+--
+-- TOC entry 2093 (class 2606 OID 16406)
+-- Name: pstops pstop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pstops
+    ADD CONSTRAINT pstop_pkey PRIMARY KEY (pstop_id);
+
+
+--
+-- TOC entry 2097 (class 2606 OID 16436)
+-- Name: workstations workstations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY workstations
+    ADD CONSTRAINT workstations_pkey PRIMARY KEY (ws_id);
+
+
+--
+-- TOC entry 2111 (class 2606 OID 16463)
+-- Name: bom item_code; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bom
+    ADD CONSTRAINT item_code FOREIGN KEY (item_code) REFERENCES items(item_code);
+
+
+--
+-- TOC entry 2113 (class 2606 OID 16481)
+-- Name: job_orders item_code; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_orders
+    ADD CONSTRAINT item_code FOREIGN KEY (item_code) REFERENCES items(item_code);
+
+
+--
+-- TOC entry 2115 (class 2606 OID 16512)
+-- Name: job_npstops job_number; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_npstops
+    ADD CONSTRAINT job_number FOREIGN KEY (job_bumber) REFERENCES job_orders(job_number);
+
+
+--
+-- TOC entry 2117 (class 2606 OID 16530)
+-- Name: job_pstops job_number; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_pstops
+    ADD CONSTRAINT job_number FOREIGN KEY (job_number) REFERENCES pstops(pstop_id);
+
+
+--
+-- TOC entry 2114 (class 2606 OID 16507)
+-- Name: job_npstops npstop_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_npstops
+    ADD CONSTRAINT npstop_id FOREIGN KEY (job_npstops_id) REFERENCES npstops(npstop_id);
+
+
+--
+-- TOC entry 2116 (class 2606 OID 16525)
+-- Name: job_pstops pstop_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job_pstops
+    ADD CONSTRAINT pstop_id FOREIGN KEY (pstop_id) REFERENCES pstops(pstop_id);
+
+
+--
+-- TOC entry 2112 (class 2606 OID 16468)
+-- Name: bom ws_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bom
+    ADD CONSTRAINT ws_id FOREIGN KEY (workstation) REFERENCES workstations(ws_id);
+
+
+--
+-- TOC entry 2118 (class 2606 OID 16543)
+-- Name: oee_data ws_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oee_data
+    ADD CONSTRAINT ws_id FOREIGN KEY (ws_id) REFERENCES workstations(ws_id);
+
+
+--
+-- TOC entry 2110 (class 2606 OID 16437)
+-- Name: workstations ws_plant; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY workstations
+    ADD CONSTRAINT ws_plant FOREIGN KEY (ws_plant) REFERENCES plants(plant_id);
+
+
+-- Completed on 2018-02-28 16:41:04
+
+--
+-- PostgreSQL database dump complete
+--
+
