@@ -18,8 +18,12 @@ import { FuseSampleModule } from './main/content/sample/sample.module';
 
 const appRoutes: Routes = [
     {
+      path        : 'pages',
+      loadChildren: './main/content/pages/pages.module#FusePagesModule'
+    },
+    {
         path      : '**',
-        redirectTo: 'sample'
+        redirectTo: 'pages/auth/login'
     }
 ];
 
