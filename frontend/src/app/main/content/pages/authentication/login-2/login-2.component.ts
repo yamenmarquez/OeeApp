@@ -67,4 +67,10 @@ export class FuseLogin2Component implements OnInit
             }
         }
     }
+
+    onSubmitLoginForm()
+    {
+      console.log(this.loginForm.value.email);
+      console.log(this.loginForm.value.password);
+    }
 }
