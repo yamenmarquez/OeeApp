@@ -160,7 +160,7 @@ export const navigation = [
               'children'  : [
                 {
                   'id'   : 'userManagement',
-                  'title': 'Gestioón de usuarios',
+                  'title': 'Gestión de usuarios',
                   'type' : 'item',
                   'icon' : 'supervisor_account',
                   'url'  : '#'
