@@ -6,6 +6,12 @@ drop schema if exists oee cascade; --Borra el schema oee antes de crearlo nuevam
 
 drop schema if exists oee_private cascade; --Borra el schema oee_private antes de crearlo nuevamente.
 
+drop role if exists postgraphile_access; --Borra el role postgraphile_access antes de crearlo nuevamente.
+
+drop role if exists postgraphile_anonymous; --Borra el role postgraphile_anonymous antes de crearlo nuevamente.
+
+drop role if exists postgraphile_user; --Borra el role postgraphile_user antes de crearlo nuevamente.
+
 create schema oee;
 create schema oee_private;
 
@@ -77,8 +83,21 @@ $$ language plpgsql strict security definer;
 
 comment on function oee.register_user(text, text, text, text) is 'Registra a un usuario y crea una cuenta en el sistema.';
 
+
+-- Creación de roles del sistema
+
+create role postgraphile_access login password 'postgraphile_access';
+
+create role postgraphile_anonymous;
+grant postgraphile_anonymous to postgraphile_access;
+
+create role postgraphile_user;
+grant postgraphile_user to postgraphile_access;
+
+-- TO-DO Comentar esta sección
+
 create type oee.jwt_token as (
-  u_account_email text,
+  role text,
   u_id integer
 );
 
@@ -94,14 +113,14 @@ begin
   where a.u_account_email = $1;
 
   if account.u_account_password_hash = crypt(passwd, account.u_account_password_hash) then
-    return (account.u_account_email, account.u_id)::oee.jwt_token;
+    return ('postgraphile_user', account.u_id)::oee.jwt_token;
   else
     return null;
   end if;
 end;
 $$ language plpgsql strict security definer;
 
-comment on function oee.authenticate(text, text) is 'Crea un JWT token que identifica a un usuario que existe en el sistema.';
+comment on function oee.authenticate(text, text) is 'Crea un JWT token que identifica a un usuario que existe en el sistema y le asigna el role postgraphile_user.';
 
 create function oee.current_user() returns oee.u as $$
   select *
@@ -110,5 +129,12 @@ create function oee.current_user() returns oee.u as $$
 $$ language sql stable;
 
 comment on function oee.current_user() is 'Devuelve al usuario identificado por el JWT.';
+
+-- Asiganación de permisos a los roles que se han creado
+
+grant postgres to postgraphile_user;
+
+grant usage on schema oee to postgraphile_anonymous;
+
 
 commit;

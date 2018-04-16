@@ -16,6 +16,15 @@ import { AppComponent } from './app.component';
 import { FuseMainModule } from './main/main.module';
 import { FuseSampleModule } from './main/content/sample/sample.module';
 
+// Configuración de Apollo
+import {Apollo, ApolloModule} from 'apollo-angular';
+import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import {ApolloLink} from 'apollo-link';
+
+// Servicios
+import { AuthenticationService } from './main/content/pages/authentication/authentication.service';
+
 const appRoutes: Routes = [
     {
       path        : 'pages',
@@ -43,7 +52,15 @@ const appRoutes: Routes = [
         FuseModule.forRoot(fuseConfig),
         FuseSharedModule,
         FuseMainModule,
-        FuseSampleModule
+        FuseSampleModule,
+       
+        // Apollo
+        ApolloModule,
+        HttpLinkModule
+
+    ],
+    providers   : [
+        AuthenticationService
     ],
     bootstrap   : [
         AppComponent
@@ -51,4 +68,10 @@ const appRoutes: Routes = [
 })
 export class AppModule
 {
+    constructor(apollo: Apollo, httpLink: HttpLink) {
+        apollo.create({
+          link: httpLink.create({ uri: 'http://localhost:5000/graphql'}),
+          cache: new InMemoryCache()
+        });
+    }
 }

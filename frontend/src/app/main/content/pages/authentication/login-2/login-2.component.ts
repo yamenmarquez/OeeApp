@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 
+// Servicios
+import { AuthenticationService } from '../authentication.service';
+
 @Component({
     selector   : 'fuse-login-2',
     templateUrl: './login-2.component.html',
@@ -17,7 +20,8 @@ export class FuseLogin2Component implements OnInit
 
     constructor(
         private fuseConfig: FuseConfigService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private authenticationService: AuthenticationService
     )
     {
         this.fuseConfig.setConfig({
@@ -70,7 +74,6 @@ export class FuseLogin2Component implements OnInit
 
     onSubmitLoginForm()
     {
-      console.log(this.loginForm.value.email);
-      console.log(this.loginForm.value.password);
+      this.authenticationService.authenticate(this.loginForm.value.email, this.loginForm.value.password);
     }
 }
