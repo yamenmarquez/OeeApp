@@ -1,4 +1,4 @@
--- Este archivo contiene el esquema de la base de datos en Postgresql para la aplicación OEE
+﻿-- Este archivo contiene el esquema de la base de datos en Postgresql para la aplicación OEE
 
 begin;
 
@@ -132,7 +132,7 @@ comment on function oee.current_user() is 'Devuelve al usuario identificado por 
 
 -- Asiganación de permisos a los roles que se han creado
 
-grant postgres to postgraphile_user;
+grant yamenmarquez to postgraphile_user;
 
 grant usage on schema oee to postgraphile_anonymous;
 
