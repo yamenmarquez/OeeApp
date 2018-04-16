@@ -21,5 +21,4 @@ import { MailConfirmModule } from './authentication/mail-confirm/mail-confirm.mo
 })
 export class FusePagesModule
 {
-
 }

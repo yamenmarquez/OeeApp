@@ -24,11 +24,16 @@ import {ApolloLink} from 'apollo-link';
 
 // Servicios
 import { AuthenticationService } from './main/content/pages/authentication/authentication.service';
+import { NpstopService } from './main/content/oee-backend/services/npstop.service';
 
 const appRoutes: Routes = [
     {
       path        : 'pages',
       loadChildren: './main/content/pages/pages.module#FusePagesModule'
+    },
+    {
+      path        : 'backend',
+      loadChildren: './main/content/oee-backend/masterdata.module#OeeAppMasterdataModule'
     },
     {
         path      : '**',
@@ -53,14 +58,16 @@ const appRoutes: Routes = [
         FuseSharedModule,
         FuseMainModule,
         FuseSampleModule,
-       
+
         // Apollo
         ApolloModule,
         HttpLinkModule
 
     ],
     providers   : [
-        AuthenticationService
+        // Servicios OeeApp
+        AuthenticationService,
+        NpstopService
     ],
     bootstrap   : [
         AppComponent

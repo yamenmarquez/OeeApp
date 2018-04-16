@@ -26,13 +26,13 @@ export class AuthenticationService {
     }
     }).subscribe(({ data }) => {
       console.log('Token', data.authenticate.jwtToken);
-    },(error) => {
+    }, (error) => {
       console.log('there was an error sending the query', error);
     });
 
     console.log('Se esta ejecutando la funcion del servicio');
     console.log(email);
     console.log(passwd);
-    
-  };
+
+  }
 }
