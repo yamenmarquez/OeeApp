@@ -8,9 +8,10 @@ import { NpstopService } from '../services/npstop.service';
 })
 export class NpstopComponent implements OnInit {
 
-  constructor() { }
+  constructor(private npstopService: NpstopService) { }
 
   ngOnInit() {
+    return this.npstopService.getAllNpStops
   }
 
 }

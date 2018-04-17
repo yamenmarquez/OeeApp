@@ -9,7 +9,7 @@ export class NpstopService {
   constructor(private apollo: Apollo) { }
 
   getAllNpStops() {
-
+    console.log('Se ejecta la funcion de npstop.service');
     this.apollo.query({
       query: gql`
         query {
