@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
 })
 export class FuseSampleComponent
 {
-    sampleData = 'Hola Mundo Oee';
+    sampleData = 'Hola Mundo Oee actualizado';
     // Se desabilita la funcionalidad de traducción
     constructor(/* private fuseTranslationLoader: FuseTranslationLoaderService */)
     {
