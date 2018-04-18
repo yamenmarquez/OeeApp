@@ -5,6 +5,8 @@ import { MatButtonModule, MatCheckboxModule, MatIconModule } from '@angular/mate
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
+import { FuseAngularMaterialModule } from '../components/angular-material/angular-material.module';
+
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { NpstopComponent } from './npstop/npstop.component';
@@ -14,7 +16,11 @@ const routes = [
     {
         path     : 'masterdata/npstop',
         component: NpstopComponent
-    }
+    },
+    {
+        path        : 'masterdata/npstop-2',
+        loadChildren: './contacts/contacts.module#FuseContactsModule'
+    },
 ];
 
 @NgModule({

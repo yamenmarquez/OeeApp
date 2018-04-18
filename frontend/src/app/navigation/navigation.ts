@@ -116,6 +116,13 @@ export const navigation = [
                   'url'  : '/backend/masterdata/npstop'
                 },
                 {
+                  'id'   : 'npstop-2',
+                  'title': 'Paradas no planificadas-2',
+                  'type' : 'item',
+                  'icon' : 'settings_input_component',
+                  'url'  : '/backend/masterdata/npstop-2'
+                },
+                {
                     'id'   : 'pstop',
                     'title': 'Paradas planificadas',
                     'type' : 'item',

@@ -1,0 +1,40 @@
+<mat-table #table [dataSource]="dataSource"
+           [@animateStagger]="{value:'50'}">
+
+    <!-- Id Column -->
+    <ng-container cdkColumnDef="npStopId">
+        <mat-header-cell *cdkHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *cdkCellDef="let npstop">
+            <p class="text-truncate font-weight-600">{{npstop.npStopId}}</p>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="npStopName">
+        <mat-header-cell *cdkHeaderCellDef>Parada</mat-header-cell>
+        <mat-cell *cdkCellDef="let npstop">
+            <p class="text-truncate font-weight-600">{{npstop.npStopName}}</p>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container cdkColumnDef="npStopResEmail">
+        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm>Res Email</mat-header-cell>
+        <mat-cell *cdkCellDef="let npstop" fxHide fxShow.gt-sm>
+            <p class="email text-truncate">
+                {{npstop.npStopResEmail}}
+            </p>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let npstop; columns: displayedColumns;"
+             class="contact"
+             (click)="editContact(npstop)"
+             [ngClass]="{'mat-light-blue-50-bg':checkboxes[npstop.npStopId]}"
+             matRipple
+             [@animate]="{value:'*',params:{y:'100%'}}">
+    </mat-row>
+</mat-table>
+
+

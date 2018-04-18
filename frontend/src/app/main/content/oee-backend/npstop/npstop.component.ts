@@ -70,7 +70,4 @@ export class NpstopComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
   }
-
-
-
 }
