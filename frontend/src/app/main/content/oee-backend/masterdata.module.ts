@@ -8,6 +8,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { NpstopComponent } from './npstop/npstop.component';
+import { NpstopCreateComponent } from './npstop-create/npstop-create.component';
 
 const routes = [
     {
@@ -18,7 +19,8 @@ const routes = [
 
 @NgModule({
     declarations: [
-        NpstopComponent
+        NpstopComponent,
+        NpstopCreateComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
