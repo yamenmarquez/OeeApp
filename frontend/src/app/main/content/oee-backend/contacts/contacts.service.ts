@@ -24,7 +24,7 @@ import { Npstop } from '../masterdata.types';
 interface AllNpStopsQueryResponse {
   allNpStops: {nodes: Npstop[]};
   loading: boolean;
-
+}
 
 
 @Injectable()
@@ -86,7 +86,7 @@ export class ContactsService implements Resolve<any>
           data.allNpStops.nodes);
     }
 
-}
+
 
     // /**
     //  * Toggle selected contact by id
@@ -133,7 +133,7 @@ export class ContactsService implements Resolve<any>
     //     }
     // }
 
-    // selectContacts(filterParameter?, filterValue?)
+    selectContacts(filterParameter?, filterValue?) {}
     // {
     //     this.selectedContacts = [];
 
@@ -158,7 +158,7 @@ export class ContactsService implements Resolve<any>
     //     this.onSelectedContactsChanged.next(this.selectedContacts);
     // }
 
-    // updateContact(contact)
+    updateContact(contact) {}
     // {
     //     return new Promise((resolve, reject) => {
 
@@ -182,7 +182,7 @@ export class ContactsService implements Resolve<any>
     //     });
     // }
 
-    // deselectContacts()
+    deselectContacts() {}
     // {
     //     this.selectedContacts = [];
 
@@ -190,14 +190,14 @@ export class ContactsService implements Resolve<any>
     //     this.onSelectedContactsChanged.next(this.selectedContacts);
     // }
 
-    // deleteContact(contact)
+    deleteContact(contact) {}
     // {
     //     const contactIndex = this.contacts.indexOf(contact);
     //     this.contacts.splice(contactIndex, 1);
     //     this.onContactsChanged.next(this.contacts);
     // }
 
-    // deleteSelectedContacts()
+    deleteSelectedContacts() {}
     // {
     //     for ( const contactId of this.selectedContacts )
     //     {
@@ -210,5 +210,4 @@ export class ContactsService implements Resolve<any>
     //     this.onContactsChanged.next(this.contacts);
     //     this.deselectContacts();
     // }
-
 }
