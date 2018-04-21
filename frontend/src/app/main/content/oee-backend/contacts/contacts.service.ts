@@ -210,4 +210,5 @@ export class ContactsService implements Resolve<any>
     //     this.onContactsChanged.next(this.contacts);
     //     this.deselectContacts();
     // }
+
 }
