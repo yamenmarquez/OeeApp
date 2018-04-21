@@ -10,7 +10,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 
 import { FuseContactsContactFormDialogComponent } from '../contact-form/contact-form.component';
 import { ContactsService } from '../contacts.service';
-import { Npstop } from '../../masterdata.types';
+import { Stop } from '../../masterdata.types';
 
 
 @Component({
@@ -24,10 +24,10 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
 {
     @ViewChild('dialogContent') dialogContent: TemplateRef<any>;
 
-    npstops: any;
+    stops: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['npStopId', 'npStopName', 'npStopResEmail'];
+    displayedColumns = ['stopId', 'stopName', 'stopType', 'stopResEmail'];
     selectedContacts: any[];
     checkboxes: {};
 
@@ -45,26 +45,26 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     )
     {
         this.onContactsChangedSubscription =
-            this.contactsService.onContactsChanged.subscribe(npstops => {
+            this.contactsService.onContactsChanged.subscribe(stops => {
 
-                this.npstops = npstops;
+                this.stops = stops;
 
                 this.checkboxes = {};
-                npstops.map(npstop => {
-                    this.checkboxes[npstops.npStopId] = false;
+                stops.map(npstop => {
+                    this.checkboxes[stops.stopId] = false;
                 });
             });
 
         this.onSelectedContactsChangedSubscription =
             this.contactsService.onSelectedContactsChanged.subscribe(selectedContacts => {
-                for ( const npStopId in this.checkboxes )
+                for ( const stopId in this.checkboxes )
                 {
-                    if ( !this.checkboxes.hasOwnProperty(npStopId) )
+                    if ( !this.checkboxes.hasOwnProperty(stopId) )
                     {
                         continue;
                     }
 
-                    this.checkboxes[npStopId] = selectedContacts.includes(npStopId);
+                    this.checkboxes[stopId] = selectedContacts.includes(stopId);
                 }
                 this.selectedContacts = selectedContacts;
             });
@@ -92,7 +92,7 @@ export class FilesDataSource extends DataSource<any>
     }
 
     /** Connect function called by the table to retrieve one stream containing the data to render. */
-    connect(): Observable<Npstop[]>
+    connect(): Observable<Stop[]>
     {
         return this.contactsService.getContacts();
     }

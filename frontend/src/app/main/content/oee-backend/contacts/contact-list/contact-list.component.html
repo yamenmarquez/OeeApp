@@ -2,36 +2,44 @@
            [@animateStagger]="{value:'50'}">
 
     <!-- Id Column -->
-    <ng-container cdkColumnDef="npStopId">
+    <ng-container cdkColumnDef="stopId">
         <mat-header-cell *cdkHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *cdkCellDef="let npstop">
-            <p class="text-truncate font-weight-600">{{npstop.npStopId}}</p>
+        <mat-cell *cdkCellDef="let stop">
+            <p class="text-truncate font-weight-600">{{stop.stopId}}</p>
         </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container cdkColumnDef="npStopName">
+    <ng-container cdkColumnDef="stopName">
         <mat-header-cell *cdkHeaderCellDef>Parada</mat-header-cell>
-        <mat-cell *cdkCellDef="let npstop">
-            <p class="text-truncate font-weight-600">{{npstop.npStopName}}</p>
+        <mat-cell *cdkCellDef="let stop">
+            <p class="text-truncate font-weight-600">{{stop.stopName}}</p>
+        </mat-cell>
+    </ng-container>
+
+     <!-- Type Column -->
+     <ng-container cdkColumnDef="stopType">
+        <mat-header-cell *cdkHeaderCellDef>Tipo Parada</mat-header-cell>
+        <mat-cell *cdkCellDef="let stop">
+            <p class="text-truncate font-weight-600">{{stop.stopType}}</p>
         </mat-cell>
     </ng-container>
 
     <!-- Email Column -->
-    <ng-container cdkColumnDef="npStopResEmail">
+    <ng-container cdkColumnDef="stopResEmail">
         <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm>Res Email</mat-header-cell>
-        <mat-cell *cdkCellDef="let npstop" fxHide fxShow.gt-sm>
+        <mat-cell *cdkCellDef="let stop" fxHide fxShow.gt-sm>
             <p class="email text-truncate">
-                {{npstop.npStopResEmail}}
+                {{stop.stopResEmail}}
             </p>
         </mat-cell>
     </ng-container>
 
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *cdkRowDef="let npstop; columns: displayedColumns;"
+    <mat-row *cdkRowDef="let stop; columns: displayedColumns;"
              class="contact"
-             (click)="editContact(npstop)"
-             [ngClass]="{'mat-light-blue-50-bg':checkboxes[npstop.npStopId]}"
+             (click)="editContact(stop)"
+             [ngClass]="{'mat-light-blue-50-bg':checkboxes[stop.stopId]}"
              matRipple
              [@animate]="{value:'*',params:{y:'100%'}}">
     </mat-row>

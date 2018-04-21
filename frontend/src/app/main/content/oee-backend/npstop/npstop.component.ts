@@ -9,10 +9,10 @@ import { Subscription } from 'apollo-client/util/Observable';
 
 // Types
 
-import { Npstop } from '../masterdata.types';
+import { Stop } from '../masterdata.types';
 
-interface AllNpStopsQueryResponse {
-  allNpStops: {nodes: Npstop[]};
+interface AllStopsQueryResponse {
+  allStops: {nodes: Stop[]};
   loading: boolean;
 
 }
@@ -24,7 +24,7 @@ interface AllNpStopsQueryResponse {
 })
 export class NpstopComponent implements OnInit, OnDestroy {
 
-  npstops: any;
+  stops: any;
   loading: boolean;
   private querySubscription: Subscription;
 
@@ -39,27 +39,28 @@ export class NpstopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('ngOnInit se esta ejecutando');
-    this.querySubscription = this.apollo.watchQuery<AllNpStopsQueryResponse>({
+    this.querySubscription = this.apollo.watchQuery<AllStopsQueryResponse>({
       query: gql`
         query {
-          allNpStops {
+          allStops {
             nodes{
-              npStopId
-              npStopName
-              npStopResEmail
-              npStopCreateAt
+              stopId
+              stopName
+              stopType
+              stopResEmail
+              stopCreateAt
             }
           }
         }
       `
     }).valueChanges.subscribe(({ data, loading }) => {
       this.loading = loading;
-      this.npstops = data.allNpStops;
+      this.stops = data.allStops;
       // To-do Hacer algo mientras loading is true
       console.log(this.loading);
-      console.log('Paradas No planificadas', this.npstops.nodes);
+      console.log('Paradas No planificadas', this.stops.nodes);
       // ngx-datatable
-      this.rows = this.npstops.nodes;
+      this.rows = this.stops.nodes;
     }, (error) => {
       // To-do mejorar gestión de errores
       console.log('Error al enviar la consulta.', error);

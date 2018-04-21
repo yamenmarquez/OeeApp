@@ -1,6 +1,7 @@
-export class Npstop {
-  npStopId: number;
-  npStopName: string;
-  npStopResEmail: string;
-  npStopCreateAt?: string;
+export class Stop {
+  stopId: number;
+  stopName: string;
+  stopType: string;
+  stopResEmail: string;
+  stopCreateAt?: string;
 }

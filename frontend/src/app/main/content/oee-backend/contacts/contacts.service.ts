@@ -17,12 +17,12 @@ import { Subscription } from 'apollo-client/util/Observable';
 
 // Types
 
-import { Npstop } from '../masterdata.types';
+import { Stop } from '../masterdata.types';
 
 
 // Migrando for Npstop Component
-interface AllNpStopsQueryResponse {
-  allNpStops: {nodes: Npstop[]};
+interface AllStopsQueryResponse {
+  allStops: {nodes: Stop[]};
   loading: boolean;
 }
 
@@ -69,21 +69,22 @@ export class ContactsService implements Resolve<any>
     }
 
     getContacts() {
-        return this.data = this.apollo.watchQuery<AllNpStopsQueryResponse>({
+        return this.data = this.apollo.watchQuery<AllStopsQueryResponse>({
           query: gql`
             query {
-              allNpStops {
+              allStops {
                 nodes{
-                  npStopId
-                  npStopName
-                  npStopResEmail
-                  npStopCreateAt
+                  stopId
+                  stopName
+                  stopType
+                  stopResEmail
+                  stopCreateAt
                 }
               }
             }
           `
         }).valueChanges.map(({ data }) =>
-          data.allNpStops.nodes);
+          data.allStops.nodes);
     }
 
 

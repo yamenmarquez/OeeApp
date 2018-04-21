@@ -15,18 +15,19 @@ drop role if exists postgraphile_user; --Borra el role postgraphile_user antes d
 create schema oee;
 create schema oee_private;
 
-create table oee.np_stop (
-    np_stop_id                  serial primary key,
-    np_stop_name                text not null check (char_length(np_stop_name) < 256),
-    np_stop_res_email           text not null check (np_stop_res_email ~* '^.+@.+\..+$'),
-    np_stop_create_at           timestamp default now()
+create table oee.stop (
+    stop_id                  serial primary key,
+    stop_name                text not null check (char_length(stop_name) < 256),
+    stop_type                text not null check (char_length(stop_type) < 256),
+    stop_res_email           text not null check (stop_res_email ~* '^.+@.+\..+$'),
+    stop_create_at           timestamp default now()
 );
 
-comment on table oee.np_stop is 'Una parada no planificada.';
-comment on column oee.np_stop.np_stop_id is 'Clave primaria de la tabla oee.np_stop.';
-comment on column oee.np_stop.np_stop_name is 'Nombre de la parada.';
-comment on column oee.np_stop.np_stop_res_email is 'Email del la persona que será notificada cuando se registre este tipo de parada.';
-comment on column oee.np_stop.np_stop_create_at is 'Fecha en la que la parada fue creada por primera vez en el sistema.';
+comment on table oee.stop is 'Una parada no planificada.';
+comment on column oee.stop.stop_id is 'Clave primaria de la tabla oee.stop.';
+comment on column oee.stop.stop_name is 'Nombre de la parada.';
+comment on column oee.stop.stop_res_email is 'Email del la persona que será notificada cuando se registre este tipo de parada.';
+comment on column oee.stop.stop_create_at is 'Fecha en la que la parada fue creada por primera vez en el sistema.';
 
 create table oee.u (
     u_id                        serial primary key,
