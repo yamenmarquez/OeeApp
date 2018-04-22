@@ -73,7 +73,6 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     ngOnInit()
     {
         this.dataSource = new FilesDataSource(this.contactsService);
-        console.log('Hello Fucking World', this.contactsService.getContacts());
     }
 
     ngOnDestroy()
@@ -92,9 +91,9 @@ export class FilesDataSource extends DataSource<any>
     }
 
     /** Connect function called by the table to retrieve one stream containing the data to render. */
-    connect(): Observable<Stop[]>
+    connect(): Observable<any[]>
     {
-        return this.contactsService.getContacts();
+        return this.contactsService.onContactsChanged;
     }
 
     disconnect()

@@ -58,7 +58,7 @@ export class NpstopComponent implements OnInit, OnDestroy {
       this.stops = data.allStops;
       // To-do Hacer algo mientras loading is true
       console.log(this.loading);
-      console.log('Paradas No planificadas', this.stops.nodes);
+      console.log('Paradas No planificadas', this.stops);
       // ngx-datatable
       this.rows = this.stops.nodes;
     }, (error) => {

@@ -23,7 +23,6 @@ import { Stop } from '../masterdata.types';
 // Migrando for Npstop Component
 interface AllStopsQueryResponse {
   allStops: {nodes: Stop[]};
-  loading: boolean;
 }
 
 
@@ -36,8 +35,11 @@ export class ContactsService implements Resolve<any>
     onSearchTextChanged: Subject<any> = new Subject();
     onFilterChanged: Subject<any> = new Subject();
 
+    
+    stops: Stop[];
+    response: any;
     contacts: Contact[];
-    user: any;
+    // user: any;
     selectedContacts: string[] = [];
 
     searchText: string;
@@ -49,7 +51,7 @@ export class ContactsService implements Resolve<any>
     private querySubscription: Subscription;
 
     // ngx-datatable
-    data: Observable<any>;
+    np1stops: Observable<any>;
     loadingIndicator = false;
     reorderable = true;
 
@@ -65,28 +67,62 @@ export class ContactsService implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
     {
-        return this.getContacts;
+      return new Promise((resolve, reject) => {
+
+          Promise.all([this.getContacts()])
+          .then(
+              ([files]) => {
+
+                  this.onSearchTextChanged.subscribe(searchText => {
+                      this.searchText = searchText;
+                      this.getContacts();
+                  });
+
+                  resolve();
+
+              },
+              reject
+          );
+      });
     }
 
-    getContacts() {
-        return this.data = this.apollo.watchQuery<AllStopsQueryResponse>({
-          query: gql`
-            query {
-              allStops {
-                nodes{
-                  stopId
-                  stopName
-                  stopType
-                  stopResEmail
-                  stopCreateAt
+    getContacts(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.apollo.watchQuery<AllStopsQueryResponse>({
+            query: gql`
+              query {
+                allStops {
+                  nodes{
+                    stopId
+                    stopName
+                    stopType
+                    stopResEmail
+                    stopCreateAt
+                  }
                 }
               }
-            }
-          `
-        }).valueChanges.map(({ data }) =>
-          data.allStops.nodes);
-    }
+            `
+            }).valueChanges.subscribe(({data}) => {
+            
+              this.stops =  data.allStops.nodes;
+              console.log(this.stops);
 
+              if ( this.searchText && this.searchText !== '' )
+              {
+                  this.stops = FuseUtils.filterArrayByString(this.stops, this.searchText);
+              }
+
+              this.stops = this.stops.map(stop => {
+                  return new Stop(stop);
+              });
+              
+              this.onContactsChanged.next(this.stops);
+              resolve(this.stops);
+
+              }, reject);
+            }
+          );
+      }
 
 
     // /**
