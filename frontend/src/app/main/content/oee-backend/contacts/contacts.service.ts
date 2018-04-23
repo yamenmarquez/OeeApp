@@ -23,6 +23,7 @@ import { Stop } from '../masterdata.types';
 // Migrando for Npstop Component
 interface AllStopsQueryResponse {
   allStops: {nodes: Stop[]};
+  __typename: string;
 }
 
 
@@ -35,7 +36,7 @@ export class ContactsService implements Resolve<any>
     onSearchTextChanged: Subject<any> = new Subject();
     onFilterChanged: Subject<any> = new Subject();
 
-    
+
     stops: Stop[];
     contacts: Contact[];
     // user: any;
@@ -94,7 +95,7 @@ export class ContactsService implements Resolve<any>
               }
             `
             }).valueChanges.subscribe(({data}) => {
-            
+
               this.stops =  data.allStops.nodes;
               console.log(this.stops);
 
@@ -106,7 +107,7 @@ export class ContactsService implements Resolve<any>
               this.stops = this.stops.map(stop => {
                   return new Stop(stop);
               });
-              
+
               this.onContactsChanged.next(this.stops);
               resolve(this.stops);
 
@@ -161,7 +162,7 @@ export class ContactsService implements Resolve<any>
         }
     }
 
-    selectContacts(filterParameter?, filterValue?) 
+    selectContacts(filterParameter?, filterValue?)
     {
         this.selectedContacts = [];
 
@@ -203,7 +204,7 @@ export class ContactsService implements Resolve<any>
                 }
               }
             }
-            
+
           `,
           variables: {
             "stop": {
@@ -217,13 +218,15 @@ export class ContactsService implements Resolve<any>
           }
           }).subscribe(({ data }) => {
                     this.getContacts();
+                    console.log(data);
+                    console.log(data.updateStopByStopId.stop);
                     resolve(data.updateStopByStopId.stop);
                 });
         });
     }
 
 
-    deselectContacts() 
+    deselectContacts()
     {
         this.selectedContacts = [];
 
@@ -268,7 +271,7 @@ export class ContactsService implements Resolve<any>
                     stopCreateAt
                   }
                 }
-            }              
+            }
           `,
           variables: {
             "stop": {
@@ -278,6 +281,31 @@ export class ContactsService implements Resolve<any>
                 "stopResEmail": stop.stopResEmail
               }
             }
+          },
+          update: (proxy, mutationResult) => {
+
+            const query = gql `
+              query {
+                allStops {
+                  nodes{
+                    stopId
+                    stopName
+                    stopType
+                    stopResEmail
+                    __typename
+                  }
+                }
+              }
+            `;
+            const data = proxy.readQuery<AllStopsQueryResponse>({
+              query,
+            });
+
+            data.allStops.nodes.push(mutationResult.createStop);
+            proxy.writeQuery({
+              query,
+              data
+            });
           }
           }).subscribe(({ data }) => {
                     this.getContacts();
@@ -302,7 +330,7 @@ export class ContactsService implements Resolve<any>
                     stopCreateAt
                   }
                 }
-            }              
+            }
           `,
           variables: {
             "stop": {

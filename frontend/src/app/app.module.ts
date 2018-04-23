@@ -76,9 +76,14 @@ const appRoutes: Routes = [
 export class AppModule
 {
     constructor(apollo: Apollo, httpLink: HttpLink) {
-        apollo.create({
-          link: httpLink.create({ uri: 'http://localhost:5000/graphql'}),
-          cache: new InMemoryCache()
-        });
+
+      const cache = new InMemoryCache(
+       // {dataIdFromObject: object => object.nodeId}
+      );
+
+      apollo.create({
+        link: httpLink.create({ uri: 'http://localhost:5000/graphql'}),
+        cache: cache
+      });
     }
 }

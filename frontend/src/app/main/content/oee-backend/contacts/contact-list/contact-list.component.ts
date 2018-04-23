@@ -27,7 +27,7 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     stops: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['checkbox', 'stopId', 'stopName', 'stopType', 'stopResEmail', 'buttons'];
+    displayedColumns = ['checkbox', 'stopName', 'stopType', 'stopResEmail', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
 
@@ -146,7 +146,7 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     {
         this.contactsService.toggleSelectedContact(stopId);
     }
-    
+
 }
 
 export class FilesDataSource extends DataSource<any>

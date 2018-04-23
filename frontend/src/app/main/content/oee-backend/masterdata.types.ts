@@ -1,9 +1,11 @@
 export class Stop {
+  nodeId?: string;
   stopId: string;
   stopName: string;
   stopType: string;
   stopResEmail: string;
   stopCreateAt?: string;
+  __typename?: string;
 
   constructor(stop) {
     this.stopId = stop.stopId || '';

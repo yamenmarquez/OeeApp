@@ -1,6 +1,6 @@
 <mat-table #table [dataSource]="dataSource"
            [@animateStagger]="{value:'50'}">
-    
+
     <!-- Checkbox Column -->
     <ng-container cdkColumnDef="checkbox">
         <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
@@ -12,12 +12,12 @@
     </ng-container>
 
     <!-- Id Column -->
-    <ng-container cdkColumnDef="stopId">
+    <!-- <ng-container cdkColumnDef="stopId">
         <mat-header-cell *cdkHeaderCellDef>Id</mat-header-cell>
         <mat-cell *cdkCellDef="let stop">
             <p class="text-truncate font-weight-600">{{stop.stopId}}</p>
         </mat-cell>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Name Column -->
     <ng-container cdkColumnDef="stopName">
@@ -50,7 +50,7 @@
         <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
         <mat-cell *cdkCellDef="let stop">
             <div fxFlex="row" fxLayoutAlign="end center">
-                
+
                 <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                         (click)="$event.stopPropagation();">
                     <mat-icon>more_vert</mat-icon>
@@ -65,7 +65,7 @@
             </div>
 
         </mat-cell>
-    </ng-container>    
+    </ng-container>
 
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let stop; columns: displayedColumns;"
