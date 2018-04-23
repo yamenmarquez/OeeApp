@@ -1,5 +1,15 @@
 <mat-table #table [dataSource]="dataSource"
            [@animateStagger]="{value:'50'}">
+    
+    <!-- Checkbox Column -->
+    <ng-container cdkColumnDef="checkbox">
+        <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
+        <mat-cell *cdkCellDef="let stop">
+            <mat-checkbox [(ngModel)]="checkboxes[stop.stopId]" (ngModelChange)="onSelectedChange(stop.stopId)"
+                          (click)="$event.stopPropagation()">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
 
     <!-- Id Column -->
     <ng-container cdkColumnDef="stopId">
@@ -34,6 +44,28 @@
             </p>
         </mat-cell>
     </ng-container>
+
+    <!-- Buttons Column -->
+    <ng-container cdkColumnDef="buttons">
+        <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
+        <mat-cell *cdkCellDef="let stop">
+            <div fxFlex="row" fxLayoutAlign="end center">
+                
+                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #moreMenu="matMenu">
+                    <button mat-menu-item aria-label="remove" (click)="deleteContact(stop)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                    </button>
+                </mat-menu>
+            </div>
+
+        </mat-cell>
+    </ng-container>    
 
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let stop; columns: displayedColumns;"

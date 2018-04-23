@@ -6,6 +6,8 @@ import { CalendarEvent } from 'angular-calendar';
 
 import { Contact } from '../contact.model';
 
+import { Stop } from '../../masterdata.types'
+
 @Component({
     selector     : 'fuse-contacts-contact-form-dialog',
     templateUrl  : './contact-form.component.html',
@@ -20,6 +22,7 @@ export class FuseContactsContactFormDialogComponent
     contactForm: FormGroup;
     action: string;
     contact: Contact;
+    stop: Stop;
 
     constructor(
         public dialogRef: MatDialogRef<FuseContactsContactFormDialogComponent>,
@@ -31,13 +34,13 @@ export class FuseContactsContactFormDialogComponent
 
         if ( this.action === 'edit' )
         {
-            this.dialogTitle = 'Edit Contact';
-            this.contact = data.contact;
+            this.dialogTitle = 'Editar parada';
+            this.stop = data.stop;
         }
         else
         {
-            this.dialogTitle = 'New Contact';
-            this.contact = new Contact({});
+            this.dialogTitle = 'Nueva parada';
+            this.stop = new Stop({});
         }
 
         this.contactForm = this.createContactForm();
@@ -46,18 +49,10 @@ export class FuseContactsContactFormDialogComponent
     createContactForm()
     {
         return this.formBuilder.group({
-            id      : [this.contact.id],
-            name    : [this.contact.name],
-            lastName: [this.contact.lastName],
-            avatar  : [this.contact.avatar],
-            nickname: [this.contact.nickname],
-            company : [this.contact.company],
-            jobTitle: [this.contact.jobTitle],
-            email   : [this.contact.email],
-            phone   : [this.contact.phone],
-            address : [this.contact.address],
-            birthday: [this.contact.birthday],
-            notes   : [this.contact.notes]
+            stopId          : [this.stop.stopId],
+            stopName        : [this.stop.stopName],
+            stopType        : [this.stop.stopType],
+            stopResEmail    : [this.stop.stopResEmail]
         });
     }
 }

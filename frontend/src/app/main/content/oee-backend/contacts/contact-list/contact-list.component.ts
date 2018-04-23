@@ -27,7 +27,7 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     stops: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['stopId', 'stopName', 'stopType', 'stopResEmail'];
+    displayedColumns = ['checkbox', 'stopId', 'stopName', 'stopType', 'stopResEmail', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
 
@@ -50,8 +50,8 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
                 this.stops = stops;
 
                 this.checkboxes = {};
-                stops.map(npstop => {
-                    this.checkboxes[stops.stopId] = false;
+                stops.map(stop => {
+                    this.checkboxes[stop.stopId] = false;
                 });
             });
 
@@ -79,8 +79,74 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     {
         this.onContactsChangedSubscription.unsubscribe();
         this.onSelectedContactsChangedSubscription.unsubscribe();
-        this.onUserDataChangedSubscription.unsubscribe();
     }
+
+    editContact(stop)
+    {
+        this.dialogRef = this.dialog.open(FuseContactsContactFormDialogComponent, {
+            panelClass: 'contact-form-dialog',
+            data      : {
+                stop: stop,
+                action : 'edit'
+            }
+        });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if ( !response )
+                {
+                    return;
+                }
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch ( actionType )
+                {
+                    /**
+                     * Save
+                     */
+                    case 'save':
+
+                        this.contactsService.updateContact(formData.getRawValue());
+
+                        break;
+                    /**
+                     * Delete
+                     */
+                    case 'delete':
+
+                        this.deleteContact(stop);
+
+                        break;
+                }
+            });
+    }
+
+        /**
+     * Delete Contact
+     */
+    deleteContact(stop)
+    {
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if ( result )
+            {
+                this.contactsService.deleteContact(stop);
+            }
+            this.confirmDialogRef = null;
+        });
+
+    }
+
+    onSelectedChange(stopId)
+    {
+        this.contactsService.toggleSelectedContact(stopId);
+    }
+    
 }
 
 export class FilesDataSource extends DataSource<any>

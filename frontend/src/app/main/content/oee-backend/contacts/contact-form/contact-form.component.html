@@ -10,9 +10,9 @@
         </mat-toolbar-row>
 
         <mat-toolbar-row class="toolbar-bottom py-8 py-sm-16" fxLayout="column" fxLayoutAlign="center center">
-            <img [src]="contact.avatar" class=" avatar contact-avatar huge"
-                 [alt]="contact.name"/>
-            <div class="contact-name">{{contact.name}}</div>
+            <!-- <img [src]="contact.avatar" class=" avatar contact-avatar huge"
+                 [alt]="contact.name"/> -->
+            <div class="contact-name">{{stop.stopName}}' '{{stop.stopId}}</div>
         </mat-toolbar-row>
     </mat-toolbar>
 
@@ -20,74 +20,31 @@
 
         <form [formGroup]="contactForm">
 
+            <!-- <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12">account_circle</mat-icon>
+                <mat-form-field fxFlex>
+                    <input name="stopId" formControlName="stopId" placeholder="Id de la parada" matInput type="number" required>
+                </mat-form-field>
+            </div> -->
+
             <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
                 <mat-icon class="mr-12 mt-12">account_circle</mat-icon>
                 <mat-form-field fxFlex>
-                    <input name="name" formControlName="name" placeholder="Name" matInput required>
+                    <input name="stopName" formControlName="stopName" placeholder="Nombre de la parada" matInput required>
                 </mat-form-field>
             </div>
 
             <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
                 <mat-icon class="mr-12 mt-12"></mat-icon>
                 <mat-form-field fxFlex>
-                    <input name="lastName" formControlName="lastName" placeholder="Lastname" matInput>
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">star</mat-icon>
-                <mat-form-field fxFlex>
-                    <input name="nickname" formControlName="nickname" matInput placeholder="Nickname">
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">phone</mat-icon>
-                <mat-form-field fxFlex>
-                    <input formControlName="phone" matInput placeholder="Phone number">
+                    <input name="stopType" formControlName="stopType" placeholder="Tipo de parada" matInput required>
                 </mat-form-field>
             </div>
 
             <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
                 <mat-icon class="mr-12 mt-12">email</mat-icon>
                 <mat-form-field fxFlex>
-                    <input name="email" formControlName="email" matInput type="email" placeholder="Email">
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">domain</mat-icon>
-                <mat-form-field fxFlex>
-                    <input name="company" formControlName="company" matInput placeholder="Company">
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">work</mat-icon>
-                <mat-form-field fxFlex>
-                    <input name="jobTitle" formControlName="jobTitle" matInput placeholder="Job title">
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-form-field class="mr-24" fxFlex>
-                    <input matInput [matDatepicker]="birthdayDatePicker" placeholder="Birthday">
-                    <mat-datepicker-toggle matSuffix [for]="birthdayDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #birthdayDatePicker></mat-datepicker>
-                </mat-form-field>
-            </div>
-
-            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">home</mat-icon>
-                <mat-form-field fxFlex>
-                    <input name="address" formControlName="address" matInput placeholder="Address">
-                </mat-form-field>
-            </div>
-
-            <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
-                <mat-icon class="mr-12 mt-12">note</mat-icon>
-                <mat-form-field fxFlex>
-                    <textarea name="notes" formControlName="notes" placeholder="Notes" matInput type="text" max-rows="4"></textarea>
+                    <input name="stopResEmail" formControlName="stopResEmail" matInput type="email" placeholder="Email del responsable">
                 </mat-form-field>
             </div>
 
@@ -106,7 +63,7 @@
             SAVE
         </button>
 
-        <button *ngIf="action ==='edit'"
+        <button *ngIf="action ==='edit'"dialogRefdialogRef
                 mat-raised-button
                 (click)="dialogRef.close(['save',contactForm])"
                 class="save-button mat-accent"

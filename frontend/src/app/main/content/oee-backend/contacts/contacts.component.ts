@@ -48,7 +48,7 @@ export class FuseContactsComponent implements OnInit, OnDestroy
                     return;
                 }
 
-                this.contactsService.updateContact(response.getRawValue());
+                this.contactsService.createNewStop(response.getRawValue());
 
             });
 

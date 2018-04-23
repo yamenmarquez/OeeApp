@@ -13,7 +13,7 @@ import { Contact } from './contact.model';
 // prueba
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { Subscription } from 'apollo-client/util/Observable';
+// import { Subscription } from 'apollo-client/util/Observable';
 
 // Types
 
@@ -37,7 +37,6 @@ export class ContactsService implements Resolve<any>
 
     
     stops: Stop[];
-    response: any;
     contacts: Contact[];
     // user: any;
     selectedContacts: string[] = [];
@@ -45,15 +44,7 @@ export class ContactsService implements Resolve<any>
     searchText: string;
     filterBy: string;
 
-    // Migrando for Npstop Component
-    npstops: any;
     loading: boolean;
-    private querySubscription: Subscription;
-
-    // ngx-datatable
-    np1stops: Observable<any>;
-    loadingIndicator = false;
-    reorderable = true;
 
     constructor(private apollo: Apollo)
     {
@@ -125,127 +116,203 @@ export class ContactsService implements Resolve<any>
       }
 
 
-    // /**
-    //  * Toggle selected contact by id
-    //  * @param id
-    //  */
-    // toggleSelectedContact(id)
+    /**
+     * Toggle selected contact by id
+     * @param stopId
+     */
+    toggleSelectedContact(stopId)
+    {
+        // First, check if we already have that todo as selected...
+        if ( this.selectedContacts.length > 0 )
+        {
+            const index = this.selectedContacts.indexOf(stopId);
+
+            if ( index !== -1 )
+            {
+                this.selectedContacts.splice(index, 1);
+
+                // Trigger the next event
+                this.onSelectedContactsChanged.next(this.selectedContacts);
+
+                // Return
+                return;
+            }
+        }
+
+        // If we don't have it, push as selected
+        this.selectedContacts.push(stopId);
+
+        // Trigger the next event
+        this.onSelectedContactsChanged.next(this.selectedContacts);
+    }
+
+    /**
+     * Toggle select all
+     */
+    toggleSelectAll()
+    {
+        if ( this.selectedContacts.length > 0 )
+        {
+            this.deselectContacts();
+        }
+        else
+        {
+            this.selectContacts();
+        }
+    }
+
+    selectContacts(filterParameter?, filterValue?) 
+    {
+        this.selectedContacts = [];
+
+        // If there is no filter, select all todos
+        if ( filterParameter === undefined || filterValue === undefined )
+        {
+            this.selectedContacts = [];
+            this.stops.map(stop => {
+                this.selectedContacts.push(stop.stopId);
+            });
+        }
+        else
+        {
+            /* this.selectedContacts.push(...
+                 this.contacts.filter(todo => {
+                     return todo[filterParameter] === filterValue;
+                 })
+             );*/
+        }
+
+        // Trigger the next event
+        this.onSelectedContactsChanged.next(this.selectedContacts);
+    }
+
+    updateContact(stop)
+    {
+        return new Promise((resolve, reject) => {
+
+          this.apollo.mutate({
+            mutation: gql`
+            mutation ($stop: UpdateStopByStopIdInput!) {
+              updateStopByStopId(input: $stop) {
+                stop {
+                  stopId
+                  stopName
+                  stopType
+                  stopResEmail
+                  stopCreateAt
+                }
+              }
+            }
+            
+          `,
+          variables: {
+            "stop": {
+              "stopId": stop.stopId,
+              "stopPatch": {
+                "stopName": stop.stopName,
+                "stopType": stop.stopType,
+                "stopResEmail": stop.stopResEmail
+              }
+            }
+          }
+          }).subscribe(({ data }) => {
+                    this.getContacts();
+                    resolve(data.updateStopByStopId.stop);
+                });
+        });
+    }
+
+
+    deselectContacts() 
+    {
+        this.selectedContacts = [];
+
+        // Trigger the next event
+        this.onSelectedContactsChanged.next(this.selectedContacts);
+    }
+
+    // deleteContact(stop)
     // {
-    //     // First, check if we already have that todo as selected...
-    //     if ( this.selectedContacts.length > 0 )
-    //     {
-    //         const index = this.selectedContacts.indexOf(id);
-
-    //         if ( index !== -1 )
-    //         {
-    //             this.selectedContacts.splice(index, 1);
-
-    //             // Trigger the next event
-    //             this.onSelectedContactsChanged.next(this.selectedContacts);
-
-    //             // Return
-    //             return;
-    //         }
-    //     }
-
-    //     // If we don't have it, push as selected
-    //     this.selectedContacts.push(id);
-
-    //     // Trigger the next event
-    //     this.onSelectedContactsChanged.next(this.selectedContacts);
+    //     const stopIndex = this.stops.indexOf(stop);
+    //     this.stops.splice(stopIndex, 1);
+    //     this.onContactsChanged.next(this.stops);
     // }
 
-    // /**
-    //  * Toggle select all
-    //  */
-    // toggleSelectAll()
-    // {
-    //     if ( this.selectedContacts.length > 0 )
-    //     {
-    //         this.deselectContacts();
-    //     }
-    //     else
-    //     {
-    //         this.selectContacts();
-    //     }
-    // }
+    deleteSelectedContacts()
+    {
+        for ( const stopId of this.selectedContacts )
+        {
+            const stop = this.stops.find(_stop => {
+                return _stop.stopId === stopId;
+            });
+            const stopIndex = this.stops.indexOf(stop);
+            this.stops.splice(stopIndex, 1);
+        }
+        this.onContactsChanged.next(this.stops);
+        this.deselectContacts();
+    }
 
-    selectContacts(filterParameter?, filterValue?) {}
-    // {
-    //     this.selectedContacts = [];
+    createNewStop(stop)
+    {
+        return new Promise((resolve, reject) => {
 
-    //     // If there is no filter, select all todos
-    //     if ( filterParameter === undefined || filterValue === undefined )
-    //     {
-    //         this.selectedContacts = [];
-    //         this.contacts.map(contact => {
-    //             this.selectedContacts.push(contact.id);
-    //         });
-    //     }
-    //     else
-    //     {
-    //         /* this.selectedContacts.push(...
-    //              this.contacts.filter(todo => {
-    //                  return todo[filterParameter] === filterValue;
-    //              })
-    //          );*/
-    //     }
+          this.apollo.mutate({
+            mutation: gql`
+            mutation ($stop: CreateStopInput!) {
+                createStop(input: $stop) {
+                  stop {
+                    stopId
+                    stopName
+                    stopType
+                    stopResEmail
+                    stopCreateAt
+                  }
+                }
+            }              
+          `,
+          variables: {
+            "stop": {
+              "stop": {
+                "stopName": stop.stopName,
+                "stopType": stop.stopType,
+                "stopResEmail": stop.stopResEmail
+              }
+            }
+          }
+          }).subscribe(({ data }) => {
+                    this.getContacts();
+                    resolve(data.createStop.stop);
+                });
+        });
+    }
 
-    //     // Trigger the next event
-    //     this.onSelectedContactsChanged.next(this.selectedContacts);
-    // }
+    deleteContact(stop)
+    {
+        return new Promise((resolve, reject) => {
 
-    updateContact(contact) {}
-    // {
-    //     return new Promise((resolve, reject) => {
-
-    //         this.http.post('http://fuse-angular-material.withinpixels.com/api/contacts-contacts/' + contact.id, {...contact})
-    //             .subscribe(response => {
-    //                 this.getContacts();
-    //                 resolve(response);
-    //             });
-    //     });
-    // }
-
-    // updateUserData(userData)
-    // {
-    //     return new Promise((resolve, reject) => {
-    //         this.http.post('http://fuse-angular-material.withinpixels.com/api/contacts-user/' + this.user.id, {...userData})
-    //             .subscribe(response => {
-    //                 this.getUserData();
-    //                 this.getContacts();
-    //                 resolve(response);
-    //             });
-    //     });
-    // }
-
-    deselectContacts() {}
-    // {
-    //     this.selectedContacts = [];
-
-    //     // Trigger the next event
-    //     this.onSelectedContactsChanged.next(this.selectedContacts);
-    // }
-
-    deleteContact(contact) {}
-    // {
-    //     const contactIndex = this.contacts.indexOf(contact);
-    //     this.contacts.splice(contactIndex, 1);
-    //     this.onContactsChanged.next(this.contacts);
-    // }
-
-    deleteSelectedContacts() {}
-    // {
-    //     for ( const contactId of this.selectedContacts )
-    //     {
-    //         const contact = this.contacts.find(_contact => {
-    //             return _contact.id === contactId;
-    //         });
-    //         const contactIndex = this.contacts.indexOf(contact);
-    //         this.contacts.splice(contactIndex, 1);
-    //     }
-    //     this.onContactsChanged.next(this.contacts);
-    //     this.deselectContacts();
-    // }
-
+          this.apollo.mutate({
+            mutation: gql`
+            mutation ($stop: DeleteStopByStopIdInput!) {
+                deleteStopByStopId(input: $stop) {
+                  stop {
+                    stopId
+                    stopName
+                    stopType
+                    stopResEmail
+                    stopCreateAt
+                  }
+                }
+            }              
+          `,
+          variables: {
+            "stop": {
+              "stopId": stop.stopId,
+            }
+          }
+          }).subscribe(({ data }) => {
+                    this.getContacts();
+                    resolve(data.deleteStopByStopId.stop);
+                });
+        });
+    }
 }

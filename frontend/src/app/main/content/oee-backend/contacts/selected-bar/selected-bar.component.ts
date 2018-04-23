@@ -27,7 +27,7 @@ export class FuseContactsSelectedBarComponent
                 this.selectedContacts = selectedContacts;
                 setTimeout(() => {
                     this.hasSelectedContacts = selectedContacts.length > 0;
-                    this.isIndeterminate = (selectedContacts.length !== this.contactsService.contacts.length && selectedContacts.length > 0);
+                    this.isIndeterminate = (selectedContacts.length !== this.contactsService.stops.length && selectedContacts.length > 0);
                 }, 0);
             });
 

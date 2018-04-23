@@ -1,5 +1,5 @@
 export class Stop {
-  stopId: number;
+  stopId: string;
   stopName: string;
   stopType: string;
   stopResEmail: string;
