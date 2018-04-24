@@ -303,13 +303,13 @@ export class ContactsService implements Resolve<any>
             const data: any = store.readQuery({
                 query: query
             });
-            
-            data.allStops.nodes.push(createStop);
-            store.writeQuery({ query: query, data })
 
+            data.allStops.nodes.push(createStop);
+            store.writeQuery({ query: query, data });
           }
-        
+
           }).subscribe(({ data }) => {
+                    this.getContacts();
                     resolve(data.createStop.stop);
                 });
         });
