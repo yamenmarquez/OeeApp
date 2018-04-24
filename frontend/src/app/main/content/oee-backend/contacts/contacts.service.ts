@@ -241,6 +241,8 @@ export class ContactsService implements Resolve<any>
     //     this.onContactsChanged.next(this.stops);
     // }
 
+
+    // To-do modificar esta función para borrar mediante graphql todos los contactos(paradas) seleccionados
     deleteSelectedContacts()
     {
         for ( const stopId of this.selectedContacts )
@@ -282,33 +284,32 @@ export class ContactsService implements Resolve<any>
               }
             }
           },
-          update: (proxy, mutationResult) => {
+          update: (store, { data: { createStop } }) => {
 
             const query = gql `
-              query {
-                allStops {
-                  nodes{
-                    stopId
-                    stopName
-                    stopType
-                    stopResEmail
-                    __typename
-                  }
+                query {
+                    allStops {
+                        nodes{
+                            stopId
+                            stopName
+                            stopType
+                            stopResEmail
+                            stopCreateAt
+                        }
+                    }
                 }
-              }
             `;
-            const data = proxy.readQuery<AllStopsQueryResponse>({
-              query,
-            });
 
-            data.allStops.nodes.push(mutationResult.createStop);
-            proxy.writeQuery({
-              query,
-              data
+            const data: any = store.readQuery({
+                query: query
             });
+            
+            data.allStops.nodes.push(createStop);
+            store.writeQuery({ query: query, data })
+
           }
+        
           }).subscribe(({ data }) => {
-                    this.getContacts();
                     resolve(data.createStop.stop);
                 });
         });
