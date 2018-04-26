@@ -97,7 +97,7 @@ export class ContactsService implements Resolve<any>
             }).valueChanges.subscribe(({data}) => {
 
               this.stops =  data.allStops.nodes;
-              console.log(this.stops);
+              console.log('getContacts() data.allStops.nodes' + ' ' + this.stops);
 
               if ( this.searchText && this.searchText !== '' )
               {
@@ -215,11 +215,36 @@ export class ContactsService implements Resolve<any>
                 "stopResEmail": stop.stopResEmail
               }
             }
+          },
+          update: (store, { data: { updateStopByStopId } }) => {
+
+            const query = gql `
+                query {
+                    allStops {
+                        nodes{
+                            stopId
+                            stopName
+                            stopType
+                            stopResEmail
+                            stopCreateAt
+                        }
+                    }
+                }
+            `;
+
+            const data: any = store.readQuery({
+                query: query
+            });
+            const updatedStop = data.allStops.nodes.find(o => o.stopId === stop.stopId);
+            updatedStop.stopName = updateStopByStopId.stop.stopName;
+            updatedStop.stopType = updateStopByStopId.stop.stopType;
+            updatedStop.stopResEmail = updateStopByStopId.stop.stopResEmail;
+            store.writeQuery({ query: query, data });
           }
           }).subscribe(({ data }) => {
                     this.getContacts();
-                    console.log(data);
-                    console.log(data.updateStopByStopId.stop);
+                    console.log('updateContact() raw data' + ' ' + data);
+                    console.log('updateContact() data.updateStopByStopId.stop' + ' ' + data.updateStopByStopId.stop);
                     resolve(data.updateStopByStopId.stop);
                 });
         });
@@ -307,7 +332,6 @@ export class ContactsService implements Resolve<any>
             data.allStops.nodes.push(createStop);
             store.writeQuery({ query: query, data });
           }
-
           }).subscribe(({ data }) => {
                     this.getContacts();
                     resolve(data.createStop.stop);
@@ -337,6 +361,29 @@ export class ContactsService implements Resolve<any>
             "stop": {
               "stopId": stop.stopId,
             }
+          },
+          update: (store, { data: { updateStopByStopId } }) => {
+
+            const query = gql `
+                query {
+                    allStops {
+                        nodes{
+                            stopId
+                            stopName
+                            stopType
+                            stopResEmail
+                            stopCreateAt
+                        }
+                    }
+                }
+            `;
+
+            const data: any = store.readQuery({
+                query: query
+            });
+            const deletedStopIndex = data.allStops.nodes.findIndex(stp => stp.stopId === stop.stopId);
+            data.allStops.nodes.splice(deletedStopIndex, 1);
+            store.writeQuery({ query: query, data });
           }
           }).subscribe(({ data }) => {
                     this.getContacts();
@@ -344,4 +391,11 @@ export class ContactsService implements Resolve<any>
                 });
         });
     }
+
+    // deleteContact(stop)
+    // {
+    //     const stopIndex = this.stops.indexOf(stop);
+    //     this.stops.splice(stopIndex, 1);
+    //     this.onContactsChanged.next(this.stops);
+    // }
 }
