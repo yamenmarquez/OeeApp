@@ -268,20 +268,6 @@ export class ContactsService implements Resolve<any>
 
 
     // To-do modificar esta función para borrar mediante graphql todos los contactos(paradas) seleccionados
-    deleteSelectedContacts()
-    {
-        for ( const stopId of this.selectedContacts )
-        {
-            const stop = this.stops.find(_stop => {
-                return _stop.stopId === stopId;
-            });
-            const stopIndex = this.stops.indexOf(stop);
-            this.stops.splice(stopIndex, 1);
-        }
-        this.onContactsChanged.next(this.stops);
-        this.deselectContacts();
-    }
-
     createNewStop(stop)
     {
         return new Promise((resolve, reject) => {
@@ -381,7 +367,7 @@ export class ContactsService implements Resolve<any>
             const data: any = store.readQuery({
                 query: query
             });
-            const deletedStopIndex = data.allStops.nodes.findIndex(stp => stp.stopId === stop.stopId);
+            const deletedStopIndex = data.allStops.nodes.findIndex(_stop => _stop.stopId === stop.stopId);
             data.allStops.nodes.splice(deletedStopIndex, 1);
             store.writeQuery({ query: query, data });
           }
@@ -391,6 +377,28 @@ export class ContactsService implements Resolve<any>
                 });
         });
     }
+
+    deleteSelectedContacts()
+    {
+        for ( const stopId of this.selectedContacts )
+        {
+          const stop = this.stops.find(_stop => _stop.stopId === stopId);
+          this.deleteContact(stop);
+        }
+        this.deselectContacts();
+    }
+    // {
+    //     for ( const stopId of this.selectedContacts )
+    //     {
+    //         const stop = this.stops.find(_stop => {
+    //             return _stop.stopId === stopId;
+    //         });
+    //         const stopIndex = this.stops.indexOf(stop);
+    //         this.stops.splice(stopIndex, 1);
+    //     }
+    //     this.onContactsChanged.next(this.stops);
+    //     this.deselectContacts();
+    // }
 
     // deleteContact(stop)
     // {
