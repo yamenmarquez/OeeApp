@@ -18,7 +18,7 @@ const routes = [
         component: NpstopComponent
     },
     {
-        path        : 'masterdata/npstop-2',
+        path        : 'masterdata/stops',
         loadChildren: './contacts/contacts.module#FuseContactsModule'
     },
 ];

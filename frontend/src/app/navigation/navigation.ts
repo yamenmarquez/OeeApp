@@ -98,7 +98,7 @@ export const navigation = [
         ]
     },
     {
-        'id'      : 'appBacktend',
+        'id'      : 'appBackend',
         'title'   : 'App Backend',
         'type'    : 'group',
         'children': [
@@ -113,24 +113,26 @@ export const navigation = [
                   'title': 'Paradas no planificadas',
                   'type' : 'item',
                   'icon' : 'settings_input_component',
-                  'url'  : '/backend/masterdata/npstop'
+                  'url'  : '/backend/masterdata/npstop',
+                  'hidden': 'true'
                 },
                 {
                   'id'   : 'npstop-2',
                   'title': 'Paradas no planificadas-2',
                   'type' : 'item',
                   'icon' : 'settings_input_component',
-                  'url'  : '/backend/masterdata/npstop-2'
+                  'url'  : '/backend/masterdata/npstop-2',
+                  'hidden': 'true'
                 },
                 {
-                    'id'   : 'pstop',
-                    'title': 'Paradas planificadas',
+                    'id'   : 'stops',
+                    'title': 'Paradas',
                     'type' : 'item',
                     'icon' : 'settings_input_component',
-                    'url'  : '#'
+                    'url'  : '/backend/masterdata/stops'
                 },
                 {
-                    'id'   : 'plant',
+                    'id'   : 'plants',
                     'title': 'Plantas de producción',
                     'type' : 'item',
                     'icon' : 'settings_input_component',
