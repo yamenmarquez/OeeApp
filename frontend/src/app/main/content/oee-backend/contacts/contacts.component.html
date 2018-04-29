@@ -7,11 +7,11 @@
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
 
-            <button mat-button class="mat-icon-button sidenav-toggle mr-12"
+            <!-- <button mat-button class="mat-icon-button sidenav-toggle mr-12"
                     fuseMatSidenavToggler="contacts-main-sidenav"
                     fxHide.gt-md>
                 <mat-icon>menu</mat-icon>
-            </button>
+            </button> -->
 
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">settings_input_component</mat-icon>
@@ -34,10 +34,6 @@
 
     </div>
     <!-- / HEADER -->
-
-    <!-- SELECTED BAR -->
-    <fuse-selected-bar class="mat-accent-600-bg" *ngIf="hasSelectedContacts" [@slideInTop]></fuse-selected-bar>
-    <!-- / SELECTED BAR -->
 
     <mat-sidenav-container>
 

@@ -10,17 +10,15 @@ import { FuseUtils } from '@fuse/utils';
 
 import { Contact } from './contact.model';
 
-// prueba
+// Apollo
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-// import { Subscription } from 'apollo-client/util/Observable';
 
 // Types
 
 import { Stop } from '../masterdata.types';
 
-
-// Migrando for Npstop Component
+// Interface To-Do Migrar a jun archivo separado de conjunto con las query y mutation graphql
 interface AllStopsQueryResponse {
   allStops: {nodes: Stop[]};
   __typename: string;
@@ -39,13 +37,7 @@ export class ContactsService implements Resolve<any>
 
     stops: Stop[];
     contacts: Contact[];
-    // user: any;
-    selectedContacts: string[] = [];
-
     searchText: string;
-    filterBy: string;
-
-    loading: boolean;
 
     constructor(private apollo: Apollo)
     {
@@ -115,77 +107,63 @@ export class ContactsService implements Resolve<any>
             }
           );
       }
-
-
-    /**
-     * Toggle selected contact by id
-     * @param stopId
-     */
-    toggleSelectedContact(stopId)
-    {
-        // First, check if we already have that todo as selected...
-        if ( this.selectedContacts.length > 0 )
-        {
-            const index = this.selectedContacts.indexOf(stopId);
-
-            if ( index !== -1 )
-            {
-                this.selectedContacts.splice(index, 1);
-
-                // Trigger the next event
-                this.onSelectedContactsChanged.next(this.selectedContacts);
-
-                // Return
-                return;
+      // CRUD
+      createNewStop(stop)
+      {
+          return new Promise((resolve, reject) => {
+  
+            this.apollo.mutate({
+              mutation: gql`
+              mutation ($stop: CreateStopInput!) {
+                  createStop(input: $stop) {
+                    stop {
+                      stopId
+                      stopName
+                      stopType
+                      stopResEmail
+                      stopCreateAt
+                    }
+                  }
+              }
+            `,
+            variables: {
+              "stop": {
+                "stop": {
+                  "stopName": stop.stopName,
+                  "stopType": stop.stopType,
+                  "stopResEmail": stop.stopResEmail
+                }
+              }
+            },
+            update: (store, { data: { createStop } }) => {
+  
+              const query = gql `
+                  query {
+                      allStops {
+                          nodes{
+                              stopId
+                              stopName
+                              stopType
+                              stopResEmail
+                              stopCreateAt
+                          }
+                      }
+                  }
+              `;
+  
+              const data: any = store.readQuery({
+                  query: query
+              });
+  
+              data.allStops.nodes.push(createStop);
+              store.writeQuery({ query: query, data });
             }
-        }
-
-        // If we don't have it, push as selected
-        this.selectedContacts.push(stopId);
-
-        // Trigger the next event
-        this.onSelectedContactsChanged.next(this.selectedContacts);
-    }
-
-    /**
-     * Toggle select all
-     */
-    toggleSelectAll()
-    {
-        if ( this.selectedContacts.length > 0 )
-        {
-            this.deselectContacts();
-        }
-        else
-        {
-            this.selectContacts();
-        }
-    }
-
-    selectContacts(filterParameter?, filterValue?)
-    {
-        this.selectedContacts = [];
-
-        // If there is no filter, select all todos
-        if ( filterParameter === undefined || filterValue === undefined )
-        {
-            this.selectedContacts = [];
-            this.stops.map(stop => {
-                this.selectedContacts.push(stop.stopId);
-            });
-        }
-        else
-        {
-            /* this.selectedContacts.push(...
-                 this.contacts.filter(todo => {
-                     return todo[filterParameter] === filterValue;
-                 })
-             );*/
-        }
-
-        // Trigger the next event
-        this.onSelectedContactsChanged.next(this.selectedContacts);
-    }
+            }).subscribe(({ data }) => {
+                      this.getContacts();
+                      resolve(data.createStop.stop);
+                  });
+          });
+      }
 
     updateContact(stop)
     {
@@ -250,81 +228,6 @@ export class ContactsService implements Resolve<any>
         });
     }
 
-
-    deselectContacts()
-    {
-        this.selectedContacts = [];
-
-        // Trigger the next event
-        this.onSelectedContactsChanged.next(this.selectedContacts);
-    }
-
-    // deleteContact(stop)
-    // {
-    //     const stopIndex = this.stops.indexOf(stop);
-    //     this.stops.splice(stopIndex, 1);
-    //     this.onContactsChanged.next(this.stops);
-    // }
-
-
-    // To-do modificar esta función para borrar mediante graphql todos los contactos(paradas) seleccionados
-    createNewStop(stop)
-    {
-        return new Promise((resolve, reject) => {
-
-          this.apollo.mutate({
-            mutation: gql`
-            mutation ($stop: CreateStopInput!) {
-                createStop(input: $stop) {
-                  stop {
-                    stopId
-                    stopName
-                    stopType
-                    stopResEmail
-                    stopCreateAt
-                  }
-                }
-            }
-          `,
-          variables: {
-            "stop": {
-              "stop": {
-                "stopName": stop.stopName,
-                "stopType": stop.stopType,
-                "stopResEmail": stop.stopResEmail
-              }
-            }
-          },
-          update: (store, { data: { createStop } }) => {
-
-            const query = gql `
-                query {
-                    allStops {
-                        nodes{
-                            stopId
-                            stopName
-                            stopType
-                            stopResEmail
-                            stopCreateAt
-                        }
-                    }
-                }
-            `;
-
-            const data: any = store.readQuery({
-                query: query
-            });
-
-            data.allStops.nodes.push(createStop);
-            store.writeQuery({ query: query, data });
-          }
-          }).subscribe(({ data }) => {
-                    this.getContacts();
-                    resolve(data.createStop.stop);
-                });
-        });
-    }
-
     deleteContact(stop)
     {
         return new Promise((resolve, reject) => {
@@ -377,33 +280,4 @@ export class ContactsService implements Resolve<any>
                 });
         });
     }
-
-    deleteSelectedContacts()
-    {
-        for ( const stopId of this.selectedContacts )
-        {
-          const stop = this.stops.find(_stop => _stop.stopId === stopId);
-          this.deleteContact(stop);
-        }
-        this.deselectContacts();
-    }
-    // {
-    //     for ( const stopId of this.selectedContacts )
-    //     {
-    //         const stop = this.stops.find(_stop => {
-    //             return _stop.stopId === stopId;
-    //         });
-    //         const stopIndex = this.stops.indexOf(stop);
-    //         this.stops.splice(stopIndex, 1);
-    //     }
-    //     this.onContactsChanged.next(this.stops);
-    //     this.deselectContacts();
-    // }
-
-    // deleteContact(stop)
-    // {
-    //     const stopIndex = this.stops.indexOf(stop);
-    //     this.stops.splice(stopIndex, 1);
-    //     this.onContactsChanged.next(this.stops);
-    // }
 }

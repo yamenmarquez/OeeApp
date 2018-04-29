@@ -27,8 +27,7 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     stops: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['checkbox', 'stopName', 'stopType', 'stopResEmail', 'buttons'];
-    selectedContacts: any[];
+    displayedColumns = ['stopName', 'stopType', 'stopResEmail', 'buttons'];
     checkboxes: {};
 
     onContactsChangedSubscription: Subscription;
@@ -53,20 +52,6 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
                 stops.map(stop => {
                     this.checkboxes[stop.stopId] = false;
                 });
-            });
-
-        this.onSelectedContactsChangedSubscription =
-            this.contactsService.onSelectedContactsChanged.subscribe(selectedContacts => {
-                for ( const stopId in this.checkboxes )
-                {
-                    if ( !this.checkboxes.hasOwnProperty(stopId) )
-                    {
-                        continue;
-                    }
-
-                    this.checkboxes[stopId] = selectedContacts.includes(stopId);
-                }
-                this.selectedContacts = selectedContacts;
             });
     }
 
@@ -140,11 +125,6 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
             this.confirmDialogRef = null;
         });
 
-    }
-
-    onSelectedChange(stopId)
-    {
-        this.contactsService.toggleSelectedContact(stopId);
     }
 
 }

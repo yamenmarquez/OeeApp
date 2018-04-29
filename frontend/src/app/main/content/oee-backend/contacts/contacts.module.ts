@@ -8,11 +8,10 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { FuseContactsMainSidenavComponent } from './sidenavs/main/main.component';
 import { FuseContactsComponent } from './contacts.component';
 import { ContactsService } from './contacts.service';
 import { FuseContactsContactListComponent } from './contact-list/contact-list.component';
-import { FuseContactsSelectedBarComponent } from './selected-bar/selected-bar.component';
+
 import { FuseContactsContactFormDialogComponent } from './contact-form/contact-form.component';
 import { Constructor } from '@angular/material/core/typings/common-behaviors/constructor';
 
@@ -30,8 +29,6 @@ const routes: Routes = [
     declarations   : [
         FuseContactsComponent,
         FuseContactsContactListComponent,
-        FuseContactsSelectedBarComponent,
-        FuseContactsMainSidenavComponent,
         FuseContactsContactFormDialogComponent
     ],
     imports        : [
