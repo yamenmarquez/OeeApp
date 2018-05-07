@@ -65,13 +65,13 @@ export class FuseToolbarComponent
                 'flag' : 'us'
             },
             {
-                'id'   : 'tr',
-                'title': 'Turkish',
-                'flag' : 'tr'
+                'id'   : 'es',
+                'title': 'Spanish',
+                'flag' : 'es'
             }
         ];
 
-        this.selectedLanguage = this.languages[0];
+        this.selectedLanguage = this.languages[1];
 
         router.events.subscribe(
             (event) => {
