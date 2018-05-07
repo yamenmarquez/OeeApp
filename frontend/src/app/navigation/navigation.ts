@@ -11,13 +11,7 @@ export const navigation = [
                 'translate': 'NAV.SAMPLE.TITLE',
                 'type' : 'item',
                 'icon' : 'email',
-                'url'  : '/sample',
-                'badge': {
-                    'title': 25,
-                    'translate': 'NAV.SAMPLE.BADGE',
-                    'bg'   : '#F44336',
-                    'fg'   : '#FFFFFF'
-                }
+                'url'  : '/sample'
             }
         ]
     }
