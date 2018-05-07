@@ -7,8 +7,7 @@ import { FuseMatSidenavHelperService } from '@fuse/directives/fuse-mat-sidenav/f
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
-// Se desabilita la funcionalidad de traducción
-// import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 @NgModule({
     entryComponents: [],
@@ -19,9 +18,8 @@ import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
         FuseMatSidenavHelperService,
         FuseNavigationService,
         FuseSidebarService,
-        FuseSplashScreenService
-        // Se desabilita la funcionalidad de traducción
-        // FuseTranslationLoaderService
+        FuseSplashScreenService,
+        FuseTranslationLoaderService
     ]
 })
 export class FuseModule
