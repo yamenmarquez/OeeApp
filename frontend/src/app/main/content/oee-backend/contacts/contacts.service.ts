@@ -21,7 +21,6 @@ import { Stop } from '../masterdata.types';
 // Interface To-Do Migrar a un archivo separado de conjunto con las query y mutation graphql
 interface AllStopsQueryResponse {
   allStops: {nodes: Stop[]};
-  __typename: string;
 }
 
 

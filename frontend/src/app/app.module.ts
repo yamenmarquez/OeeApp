@@ -25,6 +25,9 @@ import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {ApolloLink} from 'apollo-link';
+// Apollo Patch. Borrar when upgrade to Angular 6 compatibility  state
+
+import { PatchedApollo } from './patchedapollo';
 
 const appRoutes: Routes = [
     {
@@ -64,13 +67,19 @@ const appRoutes: Routes = [
     ],
     providers   : [
       // Servicios OeeApp
-      AuthenticationService
+      AuthenticationService,
+      {
+        provide: Apollo,
+        useFactory: () => new PatchedApollo()
+     }
   ],
     bootstrap   : [
         AppComponent
     ]
 })
 export class AppModule
+
+ 
 {
   constructor(apollo: Apollo, httpLink: HttpLink) {
 
