@@ -19,7 +19,7 @@ import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
         FuseMatSidenavHelperService,
         FuseNavigationService,
         FuseSidebarService,
-        FuseSplashScreenService
+        FuseSplashScreenService,
         // Se desabilita la funcionalidad de traducción
         // FuseTranslationLoaderService
     ]
