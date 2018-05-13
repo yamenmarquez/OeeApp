@@ -6,7 +6,7 @@
 
         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
-            <button mat-button class="toggle-button-navbar mat-icon-button"
+            <button mat-icon-button class="toggle-button-navbar"
                     *ngIf="!noNav"
                     (click)="toggleSidebarOpened('navbar')" fxHide.gt-md>
                 <mat-icon>menu</mat-icon>
@@ -21,7 +21,7 @@
             </div>
 
             <div class="px-8 px-mat-16">
-                <fuse-shortcuts></fuse-shortcuts>
+                <fuse-shortcuts [navigation]="navigation"></fuse-shortcuts>
             </div>
 
         </div>
@@ -61,10 +61,9 @@
             <fuse-search-bar (onInput)="search($event)"></fuse-search-bar>
 
             <div class="toolbar-separator"></div>
-
-            <!-- Se desabilita la funcionalidad de traducción
-            /* Una vez desabilitada esta funcionalidad se elimina del Toolbar
-            la selección de idiomas -->
+            <!-- Se desabilita la funcionalidad de traducción 
+            Una vez desabilitada esta funcionalidad se elimina del Toolbar 
+            la selección de idiomas --> 
 
             <!-- <button mat-button fxHide fxShow.gt-xs
                     class="language-button"
@@ -89,7 +88,7 @@
             <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
 
             <button mat-icon-button
-                    class="mat-icon-button quick-panel-toggle-button"
+                    class="quick-panel-toggle-button"
                     fuseMatSidenavToggler="quick-panel"
                     aria-label="Toggle quick panel">
                 <mat-icon class="icon">format_list_bulleted</mat-icon>

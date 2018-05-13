@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-
-// Se desabilita la funcionalidad de traducción
+// Se desabilita la funcionalidad de traducción 
 // import { TranslateService } from '@ngx-translate/core';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+
+import { navigation } from 'app/navigation/navigation';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -16,23 +17,18 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 export class FuseToolbarComponent
 {
     userStatusOptions: any[];
-
-    // Se desabilita la funcionalidad de traducción
-    /* Una vez desabilitada esta funcionalidad se elimina del Toolbar
-    la selección de idiomas */
-
     // languages: any;
     // selectedLanguage: any;
-
     showLoadingBar: boolean;
     horizontalNav: boolean;
     noNav: boolean;
+    navigation: any;
 
     constructor(
         private router: Router,
         private fuseConfig: FuseConfigService,
         private sidebarService: FuseSidebarService
-        // Se desabilita la funcionalidad de traducción
+        // Se desabilita la funcionalidad de traducción 
         // private translate: TranslateService
     )
     {
@@ -64,24 +60,20 @@ export class FuseToolbarComponent
             }
         ];
 
-        // Se desabilita la funcionalidad de traducción
-        /* Una vez desabilitada esta funcionalidad se elimina del Toolbar
-        la selección de idiomas */
-        /*
-        this.languages = [
-            {
-                'id'   : 'en',
-                'title': 'English',
-                'flag' : 'us'
-            },
-            {
-                'id'   : 'es',
-                'title': 'Spanish',
-                'flag' : 'es'
-            }
-        ]; */
+        // this.languages = [
+        //     {
+        //         'id'   : 'en',
+        //         'title': 'English',
+        //         'flag' : 'us'
+        //     },
+        //     {
+        //         'id'   : 'tr',
+        //         'title': 'Turkish',
+        //         'flag' : 'tr'
+        //     }
+        // ];
 
-        // this.selectedLanguage = this.languages[1];
+        // this.selectedLanguage = this.languages[0];
 
         router.events.subscribe(
             (event) => {
@@ -100,6 +92,7 @@ export class FuseToolbarComponent
             this.noNav = settings.layout.navigation === 'none';
         });
 
+        this.navigation = navigation;
     }
 
     toggleSidebarOpened(key)
@@ -113,13 +106,12 @@ export class FuseToolbarComponent
         console.log(value);
     }
 
-    // Se desabilita la funcionalidad de traducción
-    /* setLanguage(lang)
-    {
-        // Set the selected language for toolbar
-        this.selectedLanguage = lang;
+    // setLanguage(lang)
+    // {
+    //     // Set the selected language for toolbar
+    //     this.selectedLanguage = lang;
 
-        // Use the selected language for translations
-        this.translate.use(lang.id);
-    } */
+    //     // Use the selected language for translations
+    //     this.translate.use(lang.id);
+    // }
 }

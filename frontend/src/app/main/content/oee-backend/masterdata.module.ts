@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,14 +10,7 @@ import { FuseAngularMaterialModule } from '../components/angular-material/angula
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { NpstopComponent } from './npstop/npstop.component';
-import { NpstopCreateComponent } from './npstop-create/npstop-create.component';
-
 const routes = [
-    {
-        path     : 'masterdata/npstop',
-        component: NpstopComponent
-    },
     {
         path        : 'masterdata/stops',
         loadChildren: './contacts/contacts.module#FuseContactsModule'
@@ -25,8 +19,6 @@ const routes = [
 
 @NgModule({
     declarations: [
-        NpstopComponent,
-        NpstopCreateComponent
     ],
     imports     : [
         RouterModule.forChild(routes),

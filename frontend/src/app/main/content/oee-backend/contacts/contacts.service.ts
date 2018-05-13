@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 
@@ -15,13 +13,11 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 // Types
-
 import { Stop } from '../masterdata.types';
 
-// Interface To-Do Migrar a jun archivo separado de conjunto con las query y mutation graphql
+// Interface To-Do Migrar a un archivo separado de conjunto con las query y mutation graphql
 interface AllStopsQueryResponse {
   allStops: {nodes: Stop[]};
-  __typename: string;
 }
 
 
@@ -111,7 +107,7 @@ export class ContactsService implements Resolve<any>
       createNewStop(stop)
       {
           return new Promise((resolve, reject) => {
-  
+
             this.apollo.mutate({
               mutation: gql`
               mutation ($stop: CreateStopInput!) {
@@ -136,7 +132,7 @@ export class ContactsService implements Resolve<any>
               }
             },
             update: (store, { data: { createStop } }) => {
-  
+
               const query = gql `
                   query {
                       allStops {
@@ -150,11 +146,11 @@ export class ContactsService implements Resolve<any>
                       }
                   }
               `;
-  
+
               const data: any = store.readQuery({
                   query: query
               });
-  
+
               data.allStops.nodes.push(createStop);
               store.writeQuery({ query: query, data });
             }
@@ -182,7 +178,6 @@ export class ContactsService implements Resolve<any>
                 }
               }
             }
-
           `,
           variables: {
             "stop": {

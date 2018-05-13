@@ -1,11 +1,14 @@
-import { Component, Input, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+
+import { Subscription } from 'rxjs';
 
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { FuseSidebarComponent } from '@fuse/components/sidebar/sidebar.component';
 
 @Component({
     selector     : 'fuse-navbar',
@@ -13,7 +16,7 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
     styleUrls    : ['./navbar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FuseNavbarComponent implements OnDestroy
+export class FuseNavbarComponent implements OnInit, OnDestroy
 {
     private fusePerfectScrollbar: FusePerfectScrollbarDirective;
 
@@ -41,7 +44,8 @@ export class FuseNavbarComponent implements OnDestroy
 
     constructor(
         private sidebarService: FuseSidebarService,
-        private navigationService: FuseNavigationService
+        private navigationService: FuseNavigationService,
+        private router: Router
     )
     {
         // Navigation data
@@ -49,6 +53,21 @@ export class FuseNavbarComponent implements OnDestroy
 
         // Default layout
         this.layout = 'vertical';
+    }
+
+    ngOnInit()
+    {
+        this.router.events.subscribe(
+            (event) => {
+                if ( event instanceof NavigationEnd )
+                {
+                    if ( this.sidebarService.getSidebar('navbar') )
+                    {
+                        this.sidebarService.getSidebar('navbar').close();
+                    }
+                }
+            }
+        );
     }
 
     ngOnDestroy()
@@ -64,13 +83,13 @@ export class FuseNavbarComponent implements OnDestroy
         }
     }
 
-    toggleSidebarOpened(key)
+    toggleSidebarOpened()
     {
-        this.sidebarService.getSidebar(key).toggleOpen();
+        this.sidebarService.getSidebar('navbar').toggleOpen();
     }
 
-    toggleSidebarFolded(key)
+    toggleSidebarFolded()
     {
-        this.sidebarService.getSidebar(key).toggleFold();
+        this.sidebarService.getSidebar('navbar').toggleFold();
     }
 }

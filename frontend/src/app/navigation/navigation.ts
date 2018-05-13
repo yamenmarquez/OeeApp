@@ -103,6 +103,13 @@ export const navigation = [
         'type'    : 'group',
         'children': [
             {
+              'id'   : 'login',
+              'title': 'Login',
+              'type' : 'item',
+              'icon' : 'input',
+              'url'  : '/pages/auth/login'
+            },
+            {
               'id'        : 'masterData' ,
               'title'     : 'Datos maestros',
               'type'      : 'collapse',
