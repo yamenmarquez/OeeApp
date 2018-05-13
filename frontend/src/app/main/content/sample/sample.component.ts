@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+// Se desabilita la funcionalidad de traducción 
+// import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { locale as english } from './i18n/en';
-import { locale as turkish } from './i18n/tr';
+// import { locale as english } from './i18n/en';
+// import { locale as turkish } from './i18n/tr';
 
 @Component({
     selector   : 'fuse-sample',
@@ -12,8 +12,9 @@ import { locale as turkish } from './i18n/tr';
 })
 export class FuseSampleComponent
 {
-    constructor(private fuseTranslationLoader: FuseTranslationLoaderService)
+    sampleData = 'Hola Mundo Oee'; 
+    constructor(/*private fuseTranslationLoader: FuseTranslationLoaderService*/)
     {
-        this.fuseTranslationLoader.loadTranslations(english, turkish);
+        // this.fuseTranslationLoader.loadTranslations(english, turkish);
     }
 }

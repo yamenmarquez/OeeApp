@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+// Se desabilita la funcionalidad de traducción
+// import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
-        TranslateModule.forRoot(),
+        // Se desabilita la funcionalidad de traducción
+        // TranslateModule.forRoot(),
 
         // Fuse Main and Shared modules
         FuseModule.forRoot(fuseConfig),

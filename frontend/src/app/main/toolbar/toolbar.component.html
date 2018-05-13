@@ -61,8 +61,11 @@
             <fuse-search-bar (onInput)="search($event)"></fuse-search-bar>
 
             <div class="toolbar-separator"></div>
+            <!-- Se desabilita la funcionalidad de traducción 
+            Una vez desabilitada esta funcionalidad se elimina del Toolbar 
+            la selección de idiomas --> 
 
-            <button mat-button fxHide fxShow.gt-xs
+            <!-- <button mat-button fxHide fxShow.gt-xs
                     class="language-button"
                     [matMenuTriggerFor]="languageMenu">
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -80,7 +83,7 @@
                     </div>
                 </button>
 
-            </mat-menu>
+            </mat-menu> -->
 
             <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
 

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+// Se desabilita la funcionalidad de traducción
+// import { TranslateService } from '@ngx-translate/core';
 
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+// Se desabilita la funcionalidad de traducción
+// import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-
-import { locale as navigationEnglish } from './navigation/i18n/en';
-import { locale as navigationTurkish } from './navigation/i18n/tr';
+// Se desabilita la funcionalidad de traducción
+// import { locale as navigationEnglish } from './navigation/i18n/en';
+// import { locale as navigationTurkish } from './navigation/i18n/tr';
 
 @Component({
     selector   : 'fuse-root',
@@ -16,22 +18,24 @@ import { locale as navigationTurkish } from './navigation/i18n/tr';
 export class AppComponent
 {
     constructor(
-        private translate: TranslateService,
+        // Se desabilita la funcionalidad de traducción
+        // private translate: TranslateService,
         private fuseNavigationService: FuseNavigationService,
-        private fuseSplashScreen: FuseSplashScreenService,
-        private fuseTranslationLoader: FuseTranslationLoaderService
+        private fuseSplashScreen: FuseSplashScreenService
+        // Se desabilita la funcionalidad de traducción
+        // private fuseTranslationLoader: FuseTranslationLoaderService
     )
     {
         // Add languages
-        this.translate.addLangs(['en', 'tr']);
+        // this.translate.addLangs(['en', 'tr']);
 
         // Set the default language
-        this.translate.setDefaultLang('en');
+        // this.translate.setDefaultLang('en');
 
         // Set the navigation translations
-        this.fuseTranslationLoader.loadTranslations(navigationEnglish, navigationTurkish);
+        // this.fuseTranslationLoader.loadTranslations(navigationEnglish, navigationTurkish);
 
         // Use a language
-        this.translate.use('en');
+        // this.translate.use('en');
     }
 }
