@@ -31,6 +31,10 @@ const appRoutes: Routes = [
         loadChildren: './main/content/pages/pages.module#FusePagesModule' 
     }, 
     {
+        path        : 'backend',
+        loadChildren: './main/content/oee-backend/masterdata.module#OeeAppMasterdataModule'
+    },
+    {
         path      : '**',
         redirectTo: 'sample'
     }
