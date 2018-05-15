@@ -45,7 +45,7 @@
         </mat-cell>
     </ng-container>
 
-    <!-- Buttons Column -->
+    <!-- Buttons Column
     <ng-container cdkColumnDef="buttons">
         <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
         <mat-cell *cdkCellDef="let stop">
@@ -53,7 +53,7 @@
 
                 <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                         (click)="$event.stopPropagation();">
-                    <mat-icon>more_vert</mat-icon>
+                    <mat-icon class="secondary-text">more_vert</mat-icon>
                 </button>
 
                 <mat-menu #moreMenu="matMenu">
@@ -65,7 +65,7 @@
             </div>
 
         </mat-cell>
-    </ng-container>
+    </ng-container> -->
 
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let stop; columns: displayedColumns;"

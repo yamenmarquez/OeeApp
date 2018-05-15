@@ -26,7 +26,7 @@ export class FuseContactsContactListComponent implements OnInit, OnDestroy
     stops: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['stopName', 'stopType', 'stopResEmail', 'buttons'];
+    displayedColumns = ['stopName', 'stopType', 'stopResEmail'/*, 'buttons'*/];
     checkboxes: {};
 
     onContactsChangedSubscription: Subscription;
