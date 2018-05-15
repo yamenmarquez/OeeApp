@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
+// import 'rxjs/add/operator/map';
 
 
 import { FuseUtils } from '@fuse/utils';
@@ -85,7 +86,8 @@ export class ContactsService implements Resolve<any>
             }).valueChanges.subscribe(({data}) => {
 
               this.stops =  data.allStops.nodes;
-              console.log('getContacts() data.allStops.nodes' + ' ' + this.stops);
+              console.log('getContacts() data.allStops.nodes');
+              console.log(this.stops);
 
               if ( this.searchText && this.searchText !== '' )
               {
@@ -95,7 +97,7 @@ export class ContactsService implements Resolve<any>
               this.stops = this.stops.map(stop => {
                   return new Stop(stop);
               });
-
+              console.log(this.stops);
               this.onContactsChanged.next(this.stops);
               resolve(this.stops);
 
